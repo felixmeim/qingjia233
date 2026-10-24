@@ -1,0 +1,914 @@
+/* 请假管理系统 —— 样式
+ * 1. 基础 / 三屏左右滑动过场
+ * 2. 生成记录（申请记录）页：按参考图 1:1 还原（360px 逻辑宽基准）
+ * 3. 原有表单页 / 截图页样式（保持不变）
+ */
+
+/* ===================== 基础 ===================== */
+:root {
+    --rec-bg: #F3F4F8;
+    --rec-crumb-bg: #EBF1FD;
+    --rec-card: #FFFFFF;
+    --rec-title: #222222;
+    --rec-text: #6B6B6B;
+    --rec-line: #E5E5E5;
+    --rec-blue: #3A8DDB;          /* 审核通过 / 全部状态 */
+    --rec-link-blue: #3D7BF0;     /* 面包屑「首页」 */
+    --rec-nav: #000000;
+    --apply-blue: #03B0F2;        /* 悬浮「申请」按钮 */
+    --app-accent: #4D7CFE;
+    --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;      /* 全屏 SPA：禁止 body 滚动，避免固定层与滚动偏移错位 */
+}
+
+body {
+    margin: 0;
+    background: #0E0E10;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #F6F7F9;
+    overscroll-behavior: none;
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+}
+
+img {
+    -webkit-touch-callout: none;
+}
+
+/* ===================== 三屏容器与左右滑动过场 ===================== */
+#app {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    min-height: 100vh;
+    margin: 0 auto;
+    max-width: 420px;
+    overflow: hidden;
+    background: var(--rec-bg);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--rec-bg);
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.29, 0.68, 0.24, 1);
+    will-change: transform;
+    pointer-events: none;
+    z-index: 1;
+}
+
+#screen-shot > #page-result {
+    height: 100%;
+}
+
+/* 表单页自身滚动（body 不滚动后由这里承担） */
+#screen-form {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ===================== 表单页顶部「生成记录」入口 ===================== */
+.form-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.form-topbar__spacer {
+    flex: 1;
+}
+
+.form-topbar__link {
+    font-size: 13px;
+    color: #4D7CFE;
+    text-decoration: none;
+    padding: 6px 2px;
+}
+
+/* ===================== 生成记录（申请记录）页 ===================== */
+#screen-records {
+    background: var(--rec-bg);
+}
+
+/* 黑色导航栏 */
+.rec-nav {
+    flex: 0 0 auto;
+    height: 50px;
+    background: var(--rec-nav);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    position: relative;
+    z-index: 5;
+}
+
+.rec-nav__left {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.rec-nav__btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    padding: 8px 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    line-height: 0;
+}
+
+.rec-nav__btn:active {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.rec-nav__title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.rec-nav__btn--more {
+    margin-left: auto;
+}
+
+/* 面包屑 */
+.rec-crumb {
+    flex: 0 0 auto;
+    height: 44px;
+    background: var(--rec-crumb-bg);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 13px;
+    color: #333;
+}
+
+.rec-crumb__home {
+    display: inline-flex;
+    align-items: center;
+    color: var(--rec-link-blue);
+}
+
+.rec-crumb__home svg {
+    margin-right: 3px;
+}
+
+.rec-crumb__sep {
+    color: #C8C9CC;
+    margin: 0 4px;
+    flex: 0 0 auto;
+}
+
+.rec-crumb__cur {
+    color: #2B2B2B;
+}
+
+/* 滚动区 */
+.rec-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding-bottom: 96px;             /* 给悬浮「申请」按钮留出空间 */
+}
+
+.rec-body::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+/* 列表头：标题 + 状态筛选 */
+.rec-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 12px;
+}
+
+.rec-head__title {
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    color: #4A4A4A;
+    letter-spacing: 0.2px;
+}
+
+.rec-filter {
+    position: relative;
+}
+
+.rec-filter__btn {
+    appearance: none;
+    border: 0;
+    height: 30px;
+    border-radius: 15px;
+    background: #fff;
+    color: var(--rec-blue);
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 7px;
+    box-shadow: 0 1px 3px rgba(30, 48, 90, 0.04);
+}
+
+.rec-filter__btn:active {
+    background: #FAFAFC;
+}
+
+.rec-filter__caret {
+    margin-top: 1px;
+}
+
+.rec-filter__menu {
+    position: absolute;
+    right: 0;
+    top: 36px;
+    margin: 0;
+    padding: 6px 0;
+    list-style: none;
+    min-width: 118px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(20, 32, 60, 0.14);
+    z-index: 20;
+    font-size: 14px;
+    color: #333;
+}
+
+.rec-filter__menu li {
+    padding: 10px 16px;
+    white-space: nowrap;
+}
+
+.rec-filter__menu li[aria-selected="true"] {
+    color: var(--rec-blue);
+}
+
+/* 记录卡片 */
+.rec-list {
+    padding-bottom: 8px;
+}
+
+.rec-card {
+    margin: 0 14px 12px;
+    background: var(--rec-card);
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(18, 29, 64, 0.04);
+    overflow: hidden;
+    transition: background-color 0.15s ease;
+}
+
+.rec-card:active {
+    background: #FBFBFD;
+}
+
+.rec-card__head {
+    padding: 16px 15px 0;
+}
+
+.rec-card__title {
+    margin: 0;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    color: var(--rec-title);
+}
+
+.rec-card__divider {
+    height: 1px;
+    background: var(--rec-line);
+    margin: 17px 0 0 15px;
+}
+
+.rec-card__body {
+    padding: 22px 15px 13px;
+}
+
+.rec-row {
+    display: flex;
+    font-size: 14px;
+    line-height: 29px;
+    color: var(--rec-text);
+}
+
+.rec-row__k {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.rec-row__v {
+    flex: 1 1 auto;
+    min-width: 0;
+    word-break: break-all;
+}
+
+.rec-row--reason .rec-row__v {
+    margin-left: 4px;
+}
+
+.rec-card__status {
+    margin-top: 5px;
+    font-size: 14px;
+    line-height: 29px;
+    color: var(--rec-blue);
+}
+
+/* 空状态 */
+.rec-empty {
+    padding: 90px 0 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #9AA0AC;
+    font-size: 14px;
+}
+
+.rec-empty svg {
+    margin-bottom: 14px;
+}
+
+.rec-empty p {
+    margin: 0;
+}
+
+.rec-list__tail {
+    height: 12px;
+}
+
+/* 悬浮「申请」按钮：随滑动始终固定在屏幕底部 */
+.rec-apply {
+    appearance: none;
+    border: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 6px;
+    width: 50%;
+    max-width: 210px;
+    height: 54px;
+    border-radius: 27px;
+    background: var(--apply-blue);
+    color: #fff;
+    font-size: 19px;
+    letter-spacing: 3px;
+    text-indent: 3px;
+    font-family: inherit;
+    box-shadow: 0 4px 10px rgba(3, 176, 242, 0.22);
+    z-index: 20;
+}
+
+.rec-apply:active {
+    background: #02A0DD;
+}
+
+@supports (padding: env(safe-area-inset-bottom)) {
+    .rec-apply {
+        bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+    }
+    .wb-tabbar {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+}
+
+/* ===================== 原有页面样式 ===================== */
+
+/* 面包屑中的图标微调 */
+.breadcrumb-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+
+/* 输入框聚焦样式 */
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3B82F6;
+    ring: 2px;
+    ring-color: #BFDBFE;
+}
+
+/* 页面切换动画 */
+#page-form, #page-result {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 隐藏滚动条但保留滚动功能 */
+#scroll-content::-webkit-scrollbar {
+    display: none;
+}
+#scroll-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* 请假信息列表样式：缩小冒号间距 */
+.info-row {
+    display: flex;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.info-label {
+    color: #999999;
+    white-space: nowrap; /* 强制标签不换行 */
+}
+
+.info-value {
+    color: #333333;
+    word-break: break-all;
+    margin-left: 2px; /* 给冒号后内容留一点点自然的微小间距 */
+}
+
+/* 办理进度模块缩小字体 */
+#timeline-module {
+    font-size: 13px;
+}
+
+#timeline-module h2 {
+    font-size: 15px; /* 进一步缩小标题字体 */
+}
+
+#timeline-module .text-sm {
+    font-size: 13px; /* 侧边时间与左侧文字一致 */
+}
+
+.timeline-name {
+    color: #666666;
+}
+
+/* ===================== 企业微信 / 移动端适配 ===================== */
+body.is-wxwork .form-topbar__link {
+    padding-right: 4px;
+}
+
+/* ===================== 第一层：企业微信工作台 ===================== */
+#screen-workbench {
+    background: #000;
+}
+
+.wb-nav {
+    flex: 0 0 auto;
+    height: 44px;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+}
+
+.wb-nav__title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.wb-nav__actions {
+    position: absolute;
+    right: 12px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.wb-nav__btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    padding: 0;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wb-scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    padding-bottom: 10px;
+}
+
+.wb-scroll::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+/* 顶部轮播卡（用截图切出的两张卡图，可双击切页） */
+.wb-banner {
+    position: relative;
+    margin: 0 10px 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 118px;
+    aspect-ratio: 1012 / 347;
+    background: #DCE6EC;
+}
+
+.wb-banner__track {
+    display: flex;
+    width: 200%;
+    height: 100%;
+    transition: transform 0.32s cubic-bezier(0.29, 0.68, 0.24, 1);
+    will-change: transform;
+}
+
+.wb-banner--alt .wb-banner__track {
+    transform: translateX(-50%);
+}
+
+.wb-banner__slide {
+    width: 50%;
+    height: 100%;
+    flex: 0 0 50%;
+    object-fit: cover;
+    display: block;
+}
+/* 深色卡片 */
+.wb-card {
+    margin: 0 10px 10px;
+    background: #18191B;
+    border-radius: 8px;
+    padding: 13px 0 6px;
+}
+
+.wb-card__head {
+    padding: 0 16px 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.wb-card__title {
+    font-size: 14px;
+    color: #686868;
+    letter-spacing: 0.3px;
+}
+
+.wb-card__suffix {
+    font-size: 12px;
+    color: #4C4C4C;
+}
+
+.wb-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* 工作台里的应用格 */
+#screen-workbench .app-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 16px;
+}
+
+#screen-workbench .app-cell__icon {
+    width: 47px;
+    height: 47px;
+    object-fit: contain;
+    display: block;
+}
+
+#screen-workbench .app-cell__label {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+}
+
+#screen-workbench .app-cell--tap:active .app-cell__icon {
+    opacity: 0.75;
+}
+
+/* 大图标行（警院微应用 / 企业小助手·手机版） */
+.wb-grid--big {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0 6px;
+}
+
+.wb-grid--big .app-cell {
+    align-items: center;
+    width: 25%;
+    box-sizing: border-box;
+    padding-bottom: 10px;
+}
+
+.wb-grid--big .app-cell__icon {
+    width: 47px;
+    height: 47px;
+}
+
+.wb-grid--big .app-cell__label {
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* 「用过的小程序」条 */
+.wb-recent {
+    margin: 0 10px 10px;
+    height: 44px;
+    background: #191919;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 13px;
+    color: #686868;
+}
+
+.wb-recent span:last-child {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #565656;
+    font-size: 12px;
+}
+
+/* 底部 TabBar */
+.wb-tabbar {
+    flex: 0 0 auto;
+    display: flex;
+    background: #131313;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    z-index: 6;
+}
+
+.wb-tab {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    flex: 1 1 0;
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    color: #A3A3A3;
+    padding: 0;
+}
+
+.wb-tab img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    opacity: 0.85;
+}
+
+.wb-tab span {
+    font-size: 10px;
+    line-height: 1;
+}
+
+.wb-tab--active {
+    color: #348BFC;
+}
+
+.wb-tab--active img {
+    opacity: 1;
+}
+
+/* ===================== 第二层：掌上校园首页 ===================== */
+#screen-campus {
+    background: #F2F2F2;
+}
+
+.campus-nav {
+    flex: 0 0 auto;
+    height: 44px;
+    background: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 5;
+}
+
+.campus-nav__title {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.campus-nav__btn {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    padding: 0;
+    line-height: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.campus-nav__btn:active {
+    opacity: 0.6;
+}
+
+#campus-back {
+    left: 14px;
+}
+
+.campus-nav__btn--more {
+    right: 8px;
+}
+
+.campus-scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+}
+
+.campus-scroll::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+.campus-banner {
+    width: 100%;
+    height: 168px;
+    overflow: hidden;
+    background: #DDE6EE;
+}
+
+.campus-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+    display: block;
+}
+
+.campus-user {
+    height: 42px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    background: #fff;
+}
+
+.campus-user__avatar {
+    width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+.campus-user__name {
+    font-size: 17px;
+    font-weight: 500;
+    color: #333;
+}
+
+.campus-user__link {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 15px;
+    color: #999;
+}
+
+.campus-body {
+    background: #F2F2F2;
+}
+
+.campus-section {
+    background: #fff;
+    margin-bottom: 12px;
+    padding: 13px 0 20px;
+}
+
+.campus-section__title {
+    margin: 0 16px;
+    padding-left: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    line-height: 22px;
+}
+
+.campus-section__title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4.7px;
+    height: 15.3px;
+    border-radius: 2px;
+    background: #3578FD;
+}
+
+.campus-section__chev {
+    margin-left: auto;
+    color: #C8C8C8;
+    display: flex;
+    align-items: center;
+}
+
+.campus-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 34px;
+    padding: 26px 0 0;
+}
+
+/* 掌上校园里的应用格 */
+#screen-campus .app-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#screen-campus .app-cell__icon {
+    width: 33px;
+    height: 33px;
+    object-fit: contain;
+    display: block;
+}
+
+#screen-campus .app-cell__label {
+    margin-top: 13px;
+    font-size: 12px;
+    color: #1A1A1A;
+    line-height: 15px;
+    text-align: center;
+    padding: 0 2px;
+}
+
+#screen-campus .app-cell--tap:active .app-cell__icon {
+    opacity: 0.7;
+}
+
+.campus-tail {
+    height: 52px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .screen {
+        transition: none;
+    }
+}
