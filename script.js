@@ -727,7 +727,19 @@
 
         // 工作台顶部轮播卡：双击（掌上校园图标等可点区域以外）切页
         var bannerAlt = false;
+        var lastSlideAt = 0;
         function slideBanner() {
+            // 触屏上「两次点击」会同时触发 touchend 双击检测 和 浏览器合成的 dblclick，
+            // 这里 400ms 内只允许切换一次，否则会切两次等于没动
+            var now = Date.now();
+            if (now - lastSlideAt < 400) {
+                return;
+            }
+            lastSlideAt = now;
+            // 有双击意图时，取消「首触自动全屏」，避免全屏动画打断手势
+            try {
+                document.dispatchEvent(new CustomEvent('qj:cancelfs'));
+            } catch (e) { /* ignore */ }
             bannerAlt = !bannerAlt;
             var banner = $('wb-banner');
             if (banner) {
@@ -817,6 +829,10 @@
                 done = true;
                 document.removeEventListener('touchend', requestFs, true);
                 document.removeEventListener('pointerup', requestFs, true);
+                if (fsTimer) {
+                    clearTimeout(fsTimer);
+                    fsTimer = null;
+                }
                 var el = document.documentElement;
                 var fn = el.requestFullscreen || el.webkitRequestFullscreen;
                 if (!fn) {
@@ -829,8 +845,20 @@
                     }
                 } catch (e) { /* 某些 WebView 不支持，忽略 */ }
             }
-            document.addEventListener('touchend', requestFs, true);
-            document.addEventListener('pointerup', requestFs, true);
+            function scheduleFs(ev) {
+                if (done || fsTimer) {
+                    return;
+                }
+                if (ev && isFormTarget(ev.target)) {
+                    return;
+                }
+                fsTimer = setTimeout(function () {
+                    fsTimer = null;
+                    requestFs();
+                }, 420);
+            }
+            document.addEventListener('touchend', scheduleFs, true);
+            document.addEventListener('pointerup', scheduleFs, true);
         } catch (e) { /* 忽略 */ }
     })();
 
