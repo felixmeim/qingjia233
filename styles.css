@@ -29,11 +29,15 @@ html, body {
     overflow: hidden;      /* 全屏 SPA：禁止 body 滚动，避免固定层与滚动偏移错位 */
 }
 
+html {
+    background: #000;
+}
+
 body {
     margin: 0;
     background: #0E0E10;
     font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #F6F7F9;
+    background-color: #000;
     overscroll-behavior: none;
     -webkit-text-size-adjust: 100%;
     touch-action: manipulation;
@@ -114,6 +118,8 @@ img {
 .rec-nav {
     flex: 0 0 auto;
     height: 50px;
+    padding-top: env(safe-area-inset-top, 0px);
+    box-sizing: content-box;
     background: var(--rec-nav);
     color: #fff;
     display: flex;
@@ -487,6 +493,8 @@ body.is-wxwork .form-topbar__link {
 .wb-nav {
     flex: 0 0 auto;
     height: 44px;
+    padding-top: env(safe-area-inset-top, 0px);
+    box-sizing: content-box;
     background: #000;
     color: #fff;
     display: flex;
@@ -725,6 +733,8 @@ body.is-wxwork .form-topbar__link {
 .campus-nav {
     flex: 0 0 auto;
     height: 44px;
+    padding-top: env(safe-area-inset-top, 0px);
+    box-sizing: content-box;
     background: #000;
     color: #fff;
     display: flex;
