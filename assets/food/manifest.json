@@ -1,0 +1,474 @@
+[
+ {
+  "file": "food/banner-vip.png",
+  "label": "悦享会员横幅",
+  "source": "food-1-profile.jpg",
+  "x": 33,
+  "y": 261,
+  "w": 1002,
+  "h": 148
+ },
+ {
+  "file": "food/icon-card-crown.png",
+  "label": "超级吃货卡-皇冠",
+  "source": "food-1-profile.jpg",
+  "x": 174,
+  "y": 456,
+  "w": 71,
+  "h": 60
+ },
+ {
+  "file": "food/icon-bean.png",
+  "label": "吃货豆",
+  "source": "food-1-profile.jpg",
+  "x": 503,
+  "y": 452,
+  "w": 62,
+  "h": 68
+ },
+ {
+  "file": "food/icon-coupon.png",
+  "label": "红包卡券",
+  "source": "food-1-profile.jpg",
+  "x": 832,
+  "y": 455,
+  "w": 58,
+  "h": 63
+ },
+ {
+  "file": "food/icon-order-all.png",
+  "label": "我的订单-全部",
+  "source": "food-1-profile.jpg",
+  "x": 130,
+  "y": 845,
+  "w": 43,
+  "h": 53
+ },
+ {
+  "file": "food/icon-order-wait.png",
+  "label": "我的订单-待收货/使用",
+  "source": "food-1-profile.jpg",
+  "x": 382,
+  "y": 833,
+  "w": 75,
+  "h": 67
+ },
+ {
+  "file": "food/icon-order-review.png",
+  "label": "我的订单-待评价",
+  "source": "food-1-profile.jpg",
+  "x": 636,
+  "y": 832,
+  "w": 77,
+  "h": 66
+ },
+ {
+  "file": "food/icon-order-refund.png",
+  "label": "我的订单-退款",
+  "source": "food-1-profile.jpg",
+  "x": 892,
+  "y": 845,
+  "w": 53,
+  "h": 53
+ },
+ {
+  "file": "food/logo-merchant-delivering.png",
+  "label": "商家正在送货-姆斯汉堡头像",
+  "source": "food-1-profile.jpg",
+  "x": 45,
+  "y": 1029,
+  "w": 99,
+  "h": 99
+ },
+ {
+  "file": "food/icon-fav.png",
+  "label": "我的关注-心形加号",
+  "source": "food-1-profile.jpg",
+  "x": 79,
+  "y": 1679,
+  "w": 98,
+  "h": 95
+ },
+ {
+  "file": "food/logo-sushi.png",
+  "label": "常点的店-小二寿司logo",
+  "source": "food-1-profile.jpg",
+  "x": 564,
+  "y": 1649,
+  "w": 176,
+  "h": 152
+ },
+ {
+  "file": "food/icon-addr.png",
+  "label": "更多功能-我的地址",
+  "source": "food-1-profile.jpg",
+  "x": 127,
+  "y": 1988,
+  "w": 48,
+  "h": 54
+ },
+ {
+  "file": "food/icon-service.png",
+  "label": "更多功能-我的客服",
+  "source": "food-1-profile.jpg",
+  "x": 378,
+  "y": 1989,
+  "w": 58,
+  "h": 53
+ },
+ {
+  "file": "food/icon-invoice.png",
+  "label": "更多功能-开发票",
+  "source": "food-1-profile.jpg",
+  "x": 641,
+  "y": 1988,
+  "w": 43,
+  "h": 53
+ },
+ {
+  "file": "food/icon-rebate.png",
+  "label": "更多功能-下单返",
+  "source": "food-1-profile.jpg",
+  "x": 890,
+  "y": 1986,
+  "w": 56,
+  "h": 56
+ },
+ {
+  "file": "food/icon-cash.png",
+  "label": "互动中心-天天赚现金",
+  "source": "food-1-profile.jpg",
+  "x": 116,
+  "y": 2328,
+  "w": 69,
+  "h": 68
+ },
+ {
+  "file": "food/icon-treasure.png",
+  "label": "互动中心-天天夺宝",
+  "source": "food-1-profile.jpg",
+  "x": 373,
+  "y": 2335,
+  "w": 67,
+  "h": 60
+ },
+ {
+  "file": "food/icon-lottery.png",
+  "label": "互动中心-天天抽奖",
+  "source": "food-1-profile.jpg",
+  "x": 628,
+  "y": 2338,
+  "w": 68,
+  "h": 57
+ },
+ {
+  "file": "food/icon-fruit.png",
+  "label": "互动中心-免费领水果",
+  "source": "food-1-profile.jpg",
+  "x": 882,
+  "y": 2325,
+  "w": 73,
+  "h": 72
+ },
+ {
+  "file": "food/icon-bookmark.png",
+  "label": "口味档案-蓝色书签",
+  "source": "food-1-profile.jpg",
+  "x": 97,
+  "y": 2679,
+  "w": 20,
+  "h": 32
+ },
+ {
+  "file": "food/food-burger-combo.png",
+  "label": "推荐位-可乐+汉堡套餐",
+  "source": "food-1-profile.jpg",
+  "x": 545,
+  "y": 2502,
+  "w": 501,
+  "h": 523
+ },
+ {
+  "file": "food/food-roast-chicken.png",
+  "label": "霸王必选-烤鸡",
+  "source": "food-1-profile.jpg",
+  "x": 22,
+  "y": 2965,
+  "w": 505,
+  "h": 502
+ },
+ {
+  "file": "food/food-duck.png",
+  "label": "推荐位-鸭肉/烤鸭",
+  "source": "food-1-profile.jpg",
+  "x": 545,
+  "y": 3387,
+  "w": 501,
+  "h": 501
+ },
+ {
+  "file": "food/food-double-burger.png",
+  "label": "汉堡特写(从套餐图裁)",
+  "source": "food-1-profile.jpg",
+  "x": 650,
+  "y": 2590,
+  "w": 380,
+  "h": 380,
+  "note": "源图没有独立汉堡大图，此图从 food-burger-combo 区域内裁出的双层鸡腿堡特写"
+ },
+ {
+  "file": "food/icon-star-mini.png",
+  "label": "首页-常点",
+  "source": "food-2-orders-waiting.jpg",
+  "x": 1012,
+  "y": 150,
+  "w": 57,
+  "h": 58
+ },
+ {
+  "file": "food/icon-toolbox.png",
+  "label": "首页-工具箱",
+  "source": "food-2-orders-waiting.jpg",
+  "x": 1158,
+  "y": 149,
+  "w": 62,
+  "h": 59
+ },
+ {
+  "file": "food/logo-chuhe.png",
+  "label": "厨禾炒饭-logo",
+  "source": "food-3-orders-all.jpg",
+  "x": 46,
+  "y": 818,
+  "w": 109,
+  "h": 109
+ },
+ {
+  "file": "food/logo-yihengtong.png",
+  "label": "益恒通医疗器械-logo",
+  "source": "food-3-orders-all.jpg",
+  "x": 46,
+  "y": 1426,
+  "w": 116,
+  "h": 122
+ },
+ {
+  "file": "food/logo-beitafu.png",
+  "label": "贝塔芙-logo",
+  "source": "food-3-orders-all.jpg",
+  "x": 46,
+  "y": 2045,
+  "w": 110,
+  "h": 110
+ },
+ {
+  "file": "food/food-apron.png",
+  "label": "围裙商品图",
+  "source": "food-3-orders-all.jpg",
+  "x": 46,
+  "y": 370,
+  "w": 256,
+  "h": 237
+ },
+ {
+  "file": "food/food-glue.png",
+  "label": "胶水商品图",
+  "source": "food-3-orders-all.jpg",
+  "x": 314,
+  "y": 370,
+  "w": 256,
+  "h": 237
+ },
+ {
+  "file": "food/food-spatula.png",
+  "label": "木铲商品图",
+  "source": "food-3-orders-all.jpg",
+  "x": 582,
+  "y": 370,
+  "w": 256,
+  "h": 237
+ },
+ {
+  "file": "food/food-fried-rice.png",
+  "label": "海鲜炒饭商品图",
+  "source": "food-3-orders-all.jpg",
+  "x": 45,
+  "y": 961,
+  "w": 258,
+  "h": 258
+ },
+ {
+  "file": "food/food-gauze.png",
+  "label": "脱脂纱布绷带商品图",
+  "source": "food-3-orders-all.jpg",
+  "x": 45,
+  "y": 1575,
+  "w": 257,
+  "h": 257,
+  "note": "food-6 详情页的商品图与本图同款，共用这一份"
+ },
+ {
+  "file": "food/food-bandage.png",
+  "label": "创口贴商品图",
+  "source": "food-3-orders-all.jpg",
+  "x": 315,
+  "y": 1576,
+  "w": 256,
+  "h": 256,
+  "note": "food-6 详情页的商品图与本图同款，共用这一份"
+ },
+ {
+  "file": "food/icon-hot.png",
+  "label": "平台消息-爆火人气旺",
+  "source": "food-4-messages.jpg",
+  "x": 79,
+  "y": 498,
+  "w": 92,
+  "h": 93
+ },
+ {
+  "file": "food/icon-rider-pickup.png",
+  "label": "骑手已取餐-姆斯汉堡",
+  "source": "food-4-messages.jpg",
+  "x": 53,
+  "y": 691,
+  "w": 151,
+  "h": 152
+ },
+ {
+  "file": "food/icon-shield.png",
+  "label": "食无忧保障-喇叭",
+  "source": "food-4-messages.jpg",
+  "x": 53,
+  "y": 907,
+  "w": 152,
+  "h": 152
+ },
+ {
+  "file": "food/avatar-group-fans.png",
+  "label": "粉丝群-四宫格头像",
+  "source": "food-4-messages.jpg",
+  "x": 53,
+  "y": 1300,
+  "w": 149,
+  "h": 150
+ },
+ {
+  "file": "food/avatar-shop-ms.png",
+  "label": "姆斯汉堡-商家头像(四宫格左上)",
+  "source": "food-4-messages.jpg",
+  "x": 53,
+  "y": 1300,
+  "w": 75,
+  "h": 76,
+  "note": "取自粉丝群四宫格头像的左上格（姆斯汉堡 logo）"
+ },
+ {
+  "file": "food/avatar-rider-pangming.png",
+  "label": "骑手-庞铭头像",
+  "source": "food-4-messages.jpg",
+  "x": 60,
+  "y": 1517,
+  "w": 140,
+  "h": 146
+ },
+ {
+  "file": "food/avatar-rider-lixiaoling.png",
+  "label": "骑手-李小玲头像",
+  "source": "food-4-messages.jpg",
+  "x": 60,
+  "y": 1938,
+  "w": 140,
+  "h": 149
+ },
+ {
+  "file": "food/avatar-rider-lishifeng.png",
+  "label": "骑手-李士凤头像",
+  "source": "food-4-messages.jpg",
+  "x": 60,
+  "y": 2365,
+  "w": 140,
+  "h": 146
+ },
+ {
+  "file": "food/tab-home.png",
+  "label": "底部tab-推荐",
+  "source": "food-4-messages.jpg",
+  "x": 89,
+  "y": 2565,
+  "w": 75,
+  "h": 77
+ },
+ {
+  "file": "food/tab-msg.png",
+  "label": "底部tab-消息",
+  "source": "food-4-messages.jpg",
+  "x": 341,
+  "y": 2567,
+  "w": 77,
+  "h": 78
+ },
+ {
+  "file": "food/tab-ai.png",
+  "label": "底部tab-AI点外卖",
+  "source": "food-4-messages.jpg",
+  "x": 582,
+  "y": 2558,
+  "w": 106,
+  "h": 84
+ },
+ {
+  "file": "food/tab-cart.png",
+  "label": "底部tab-购物车",
+  "source": "food-4-messages.jpg",
+  "x": 848,
+  "y": 2561,
+  "w": 83,
+  "h": 84
+ },
+ {
+  "file": "food/tab-me.png",
+  "label": "底部tab-我的",
+  "source": "food-4-messages.jpg",
+  "x": 1106,
+  "y": 2565,
+  "w": 77,
+  "h": 78
+ },
+ {
+  "file": "food/avatar-rider-chat.png",
+  "label": "聊天页-骑手李小玲头像",
+  "source": "food-5-chat.jpg",
+  "x": 45,
+  "y": 710,
+  "w": 111,
+  "h": 118
+ },
+ {
+  "file": "food/logo-xiaofantang.png",
+  "label": "订单已送达-小饭堂logo",
+  "source": "food-5-chat.jpg",
+  "x": 40,
+  "y": 343,
+  "w": 150,
+  "h": 149
+ },
+ {
+  "file": "food/icon-cs.png",
+  "label": "右上-客服耳机",
+  "source": "food-6-order-detail.jpg",
+  "x": 948,
+  "y": 141,
+  "w": 52,
+  "h": 48
+ },
+ {
+  "file": "food/banner-tmall.png",
+  "label": "天猫双11红横幅",
+  "source": "food-6-order-detail.jpg",
+  "x": 0,
+  "y": 1085,
+  "w": 1080,
+  "h": 265
+ }
+]
