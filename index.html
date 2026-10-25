@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -54,7 +54,7 @@
             <button type="button" class="wb-tab wb-tab--active">
                 <img src="assets/icons/workbench/workbench.png" alt=""><span>工作台</span>
             </button>
-            <button type="button" class="wb-tab">
+            <button type="button" class="wb-tab" data-action="open-food">
                 <img src="assets/icons/workbench/me.png" alt=""><span>我</span>
             </button>
         </nav>
@@ -317,6 +317,14 @@
             </div>
         </div>
     </section>
+
+<!-- ================= 第三层：外卖 App（工作台「我」进入） ================= -->
+    <section class="screen screen--food" id="screen-food" data-page="food"></section>
+    <section class="screen screen--food" id="screen-food-orders" data-page="food-orders"></section>
+    <section class="screen screen--food" id="screen-food-order-detail" data-page="food-order-detail"></section>
+    <section class="screen screen--food" id="screen-food-messages" data-page="food-messages"></section>
+    <section class="screen screen--food" id="screen-food-chat" data-page="food-chat"></section>
+    <section class="screen screen--food" id="screen-food-ai" data-page="food-ai"></section>
 
 </div>
 
