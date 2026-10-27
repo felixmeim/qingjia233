@@ -1,4 +1,4 @@
-const CACHE_NAME = 'qingjia-cache-v14';
+const CACHE_NAME = 'qingjia-cache-v15';
 const CORE_ASSETS = [
   './',
   './index.html',

@@ -2114,7 +2114,7 @@ body.is-wxwork .form-topbar__link {
     right: -12px;
     top: -14px;
     bottom: -10px;
-    background: url(assets/food/home-top-bg-clean.png) center top / cover no-repeat;
+    background: url(assets/food/home-top-bg-clean.jpg) center top / cover no-repeat;
     filter: blur(2px) saturate(1.04) brightness(1.03);
     transform: scale(1.02);
     z-index: 0;

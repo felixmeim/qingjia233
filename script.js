@@ -1092,7 +1092,7 @@
                 price: 5.15,
                 origin: 7.8,
                 tag: '7天无理由退换',
-                img: 'assets/food/food-gauze.png'
+                img: 'assets/food/food-gauze.jpg'
             },
             {
                 name: '[云南白药泰邦]创口贴(轻巧型)70*20mm*20片/盒伤口贴擦伤',
@@ -1100,7 +1100,7 @@
                 price: 8.14,
                 origin: 15.8,
                 tag: '不支持7天无理由退换',
-                img: 'assets/food/food-bandage.png'
+                img: 'assets/food/food-bandage.jpg'
             }
         ],
         packing: 0.5,
@@ -1220,7 +1220,7 @@
                         '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>' +
                     '</button>' +
                 '</div>' +
-                '<div class="food-vip">' + foodImg('assets/food/banner-vip.png', 'food-vip__img') + '</div>' +
+                '<div class="food-vip">' + foodImg('assets/food/banner-vip.jpg', 'food-vip__img') + '</div>' +
                 '<div class="food-card food-quick">' + quick.map(function (q) {
                     return '<div class="food-quick__item">' + foodImg(q.icon, 'food-quick__icon') +
                         '<span class="food-quick__label">' + q.label + '</span>' +
@@ -1393,7 +1393,7 @@
                 '</div>' +
                 '<div class="food-detail-other"><span class="food-detail-other__l"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#1A1E24" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12.2l2.4 2.4 4.6-4.8"/></svg>其他服务</span>' +
                     '<span class="food-detail-other__r">蜂鸟准时达，号码保护<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#C2C8D0" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></span></div>' +
-                '<div class="food-detail-banner">' + foodImg('assets/food/banner-tmall.png', 'food-detail-banner__img') + '</div>' +
+                '<div class="food-detail-banner">' + foodImg('assets/food/banner-tmall.jpg', 'food-detail-banner__img') + '</div>' +
                 '<div class="food-detail-shop"><span class="food-detail-shop__name">' + o.store + '</span>' +
                     '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#9AA4B0" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>' +
                 o.items.map(function (it) {
@@ -1502,9 +1502,9 @@
                 '<div class="food-chat-msg">' + foodImg(rider.avatar, 'food-chat-msg__avatar') +
                     '<div class="food-chat-msg__card"><span class="food-chat-msg__ct">订单已送达</span>' +
                     '<span class="food-chat-msg__cs">您好，货品已按照您的要求送达指定地点，请及时取件。</span>' +
-                    '<div class="food-chat-msg__pics">' + foodImg('assets/food/chat-photo-a.png', 'food-chat-msg__pic') + foodImg('assets/food/chat-photo-b.png', 'food-chat-msg__pic') + '</div></div></div>' +
+                    '<div class="food-chat-msg__pics">' + foodImg('assets/food/chat-photo-a.jpg', 'food-chat-msg__pic') + foodImg('assets/food/chat-photo-b.jpg', 'food-chat-msg__pic') + '</div></div></div>' +
                 '<div class="food-chat-msg">' + foodImg(rider.avatar, 'food-chat-msg__avatar') +
-                    foodImg('assets/food/chat-photo-c.png', 'food-chat-msg__bigpic') + '</div>' +
+                    foodImg('assets/food/chat-photo-c.jpg', 'food-chat-msg__bigpic') + '</div>' +
                 '<div class="food-chat-ended">会话已结束</div>' +
                 '<div class="food-chat-tail"></div>' +
             '</div>';
@@ -1646,13 +1646,13 @@
             { ico: '', label: '筛选' }
         ];
         var groups = [
-            { img: 'assets/food/group-mushroom.png', name: '菌菇米线', note: '本月点过2次', price: '12.46', id: 'gm' },
-            { img: 'assets/food/group-chicken.png', name: '黄金鸡排堡+牛肉...', note: '热门榜店铺', price: '10.43', id: 'gc' },
-            { img: 'assets/food/group-bowl.png', name: '农家一碗香木桶饭...', note: '点过该店', price: '11.5', id: 'gb' }
+            { img: 'assets/food/group-mushroom.jpg', name: '菌菇米线', note: '本月点过2次', price: '12.46', id: 'gm' },
+            { img: 'assets/food/group-chicken.jpg', name: '黄金鸡排堡+牛肉...', note: '热门榜店铺', price: '10.43', id: 'gc' },
+            { img: 'assets/food/group-bowl.jpg', name: '农家一碗香木桶饭...', note: '点过该店', price: '11.5', id: 'gb' }
         ];
         var shops = [
             {
-                id: 'mocksun', img: 'assets/food/shop-mocksun.png', badge: '附近上新',
+                id: 'mocksun', img: 'assets/food/shop-mocksun.jpg', badge: '附近上新',
                 name: 'MOCKSUN生日蛋糕·动物奶油·冰淇淋',
                 meta: '月售32 无堂食 无明厨亮灶',
                 ship: '起送 ¥0 免配送费',
@@ -1661,7 +1661,7 @@
                 chips: ['爆 18元', '2元店铺红包'], chipRed: true, close: true, fold: true
             },
             {
-                id: 'shusanshi', img: 'assets/food/shop-shusanshi.png', badge: '校园送',
+                id: 'shusanshi', img: 'assets/food/shop-shusanshi.jpg', badge: '校园送',
                 name: '蔬三时·轻食·健康餐(嘉禾望岗店)',
                 meta: '月售3000+ 无明厨亮灶',
                 ship: '起送 ¥40 配送 约¥3.8',
@@ -1688,7 +1688,7 @@
                 chips: ['爆 23元', '2元店铺红包', '食无忧'], chipRed: true
             },
             {
-                id: 'zhanyu', img: 'assets/food/shop-zhanyu.png', badge: '校园送',
+                id: 'zhanyu', img: 'assets/food/shop-zhanyu.jpg', badge: '校园送',
                 name: '绽语·S-Kitchen·四季轻食(设计之...',
                 meta: '月售4000+ 明厨亮灶',
                 ship: '起送 ¥15 配送 约¥0.5',
@@ -1697,7 +1697,7 @@
                 chips: ['爆 25元', '优评领1元店铺券', '安心吃'], chipRed: true
             },
             {
-                id: 'binjolin', img: 'assets/food/shop-binjolin.png', badge: '校园送',
+                id: 'binjolin', img: 'assets/food/shop-binjolin.jpg', badge: '校园送',
                 name: 'BinjoLin槟知蕉林轻食(设计之都店)',
                 meta: '月售800+ 明厨亮灶',
                 ship: '起送 ¥60 配送 约¥5.8',
@@ -1786,8 +1786,8 @@
                 '<div class="home-shops">' + shops.slice(0, 1).map(shopCardHtml).join('') + '</div>' +
                 '<div class="home-ads">' +
                     '<div class="home-ad__track" id="home-ad-track">' +
-                        foodImg('assets/food/ad-20redpacket.png', 'home-ad__img') +
-                        foodImg('assets/food/ad-alt2.png', 'home-ad__img') +
+                        foodImg('assets/food/ad-20redpacket.jpg', 'home-ad__img') +
+                        foodImg('assets/food/ad-alt2.jpg', 'home-ad__img') +
                     '</div>' +
                     '<div class="home-ad__dots"><i class="home-ad__dot home-ad__dot--on"></i><i class="home-ad__dot"></i></div>' +
                 '</div>' +
@@ -1849,20 +1849,20 @@
         mocksun: {
             name: 'MOCKSUN生日蛋糕·动物奶油·冰淇淋',
             rate: '4.9', sales: '月售32', eta: '41分钟', dist: '5.6km',
-            cover: 'assets/food/shop-mocksun.png',
+            cover: 'assets/food/shop-mocksun.jpg',
             items: [
-                { id: 'm1', img: 'assets/food/shop-mocksun.png', name: '【爆款】草莓动物奶油蛋糕 6寸', tags: ['月售12', '回头客多'], price: 88, origin: 128 },
+                { id: 'm1', img: 'assets/food/shop-mocksun.jpg', name: '【爆款】草莓动物奶油蛋糕 6寸', tags: ['月售12', '回头客多'], price: 88, origin: 128 },
                 { id: 'm2', img: 'assets/food/item-mango.png', name: '芒果慕斯小方 甜品拼盘', tags: ['月售6'], price: 36, origin: 48 }
             ]
         },
         shusanshi: {
             name: '蔬三时·轻食·健康餐(嘉禾望岗店)',
             rate: '4.7', sales: '月售3000+', eta: '35分钟', dist: '6.4km',
-            cover: 'assets/food/shop-shusanshi.png',
+            cover: 'assets/food/shop-shusanshi.jpg',
             items: [
-                { id: 's1', img: 'assets/food/shop-shusanshi.png', name: '低脂鸡胸沙拉碗 双人份', tags: ['热销第1'], price: 39.9, origin: 56 },
-                { id: 's2', img: 'assets/food/group-mushroom.png', name: '菌菇藜麦暖沙拉', tags: ['本月点过2次'], price: 26.8, origin: 33 },
-                { id: 's3', img: 'assets/food/group-chicken.png', name: '香煎鸡排轻食套餐', tags: ['高蛋白'], price: 32, origin: 42 }
+                { id: 's1', img: 'assets/food/shop-shusanshi.jpg', name: '低脂鸡胸沙拉碗 双人份', tags: ['热销第1'], price: 39.9, origin: 56 },
+                { id: 's2', img: 'assets/food/group-mushroom.jpg', name: '菌菇藜麦暖沙拉', tags: ['本月点过2次'], price: 26.8, origin: 33 },
+                { id: 's3', img: 'assets/food/group-chicken.jpg', name: '香煎鸡排轻食套餐', tags: ['高蛋白'], price: 32, origin: 42 }
             ]
         },
         xianmiao: {
@@ -1871,8 +1871,8 @@
             cover: 'assets/food/shop-xianmiao.png',
             items: [
                 { id: 'x1', img: 'assets/food/shop-xianmiao.png', name: '招牌仙庙烧鸡 半只', tags: ['月售200+'], price: 45, origin: 58 },
-                { id: 'x2', img: 'assets/food/group-chicken.png', name: '黄金鸡排堡+可乐套餐', tags: ['热门榜'], price: 25.9, origin: 36 },
-                { id: 'x3', img: 'assets/food/group-bowl.png', name: '香米饭 木桶装', tags: ['加购'], price: 3, origin: 5 }
+                { id: 'x2', img: 'assets/food/group-chicken.jpg', name: '黄金鸡排堡+可乐套餐', tags: ['热门榜'], price: 25.9, origin: 36 },
+                { id: 'x3', img: 'assets/food/group-bowl.jpg', name: '香米饭 木桶装', tags: ['加购'], price: 3, origin: 5 }
             ]
         },
         brothers: {
@@ -1881,36 +1881,36 @@
             cover: 'assets/food/shop-brothers.png',
             items: [
                 { id: 'b1', img: 'assets/food/shop-brothers.png', name: '湛江白切鸭 半只 配姜葱汁', tags: ['月售3000+'], price: 42, origin: 55 },
-                { id: 'b2', img: 'assets/food/group-bowl.png', name: '鸭油饭 大碗', tags: ['招牌'], price: 6, origin: 8 },
-                { id: 'b3', img: 'assets/food/group-mushroom.png', name: '菌菇鸭汤', tags: ['暖胃'], price: 18, origin: 24 }
+                { id: 'b2', img: 'assets/food/group-bowl.jpg', name: '鸭油饭 大碗', tags: ['招牌'], price: 6, origin: 8 },
+                { id: 'b3', img: 'assets/food/group-mushroom.jpg', name: '菌菇鸭汤', tags: ['暖胃'], price: 18, origin: 24 }
             ]
         },
         zhanyu: {
             name: '绽语·S-Kitchen·四季轻食',
             rate: '4.8', sales: '月售4000+', eta: '33分钟', dist: '5.9km',
-            cover: 'assets/food/shop-zhanyu.png',
+            cover: 'assets/food/shop-zhanyu.jpg',
             items: [
-                { id: 'z1', img: 'assets/food/shop-zhanyu.png', name: '原切牛排轻食拼盘', tags: ['千人回购'], price: 58, origin: 78 },
-                { id: 'z2', img: 'assets/food/group-chicken.png', name: '鸡胸肉沙拉套餐', tags: ['低脂'], price: 29.9, origin: 39 },
-                { id: 'z3', img: 'assets/food/group-bowl.png', name: '四季蔬菜碗', tags: ['素食'], price: 21, origin: 28 }
+                { id: 'z1', img: 'assets/food/shop-zhanyu.jpg', name: '原切牛排轻食拼盘', tags: ['千人回购'], price: 58, origin: 78 },
+                { id: 'z2', img: 'assets/food/group-chicken.jpg', name: '鸡胸肉沙拉套餐', tags: ['低脂'], price: 29.9, origin: 39 },
+                { id: 'z3', img: 'assets/food/group-bowl.jpg', name: '四季蔬菜碗', tags: ['素食'], price: 21, origin: 28 }
             ]
         },
         binjolin: {
             name: 'BinjoLin槟知蕉林轻食(设计之都店)',
             rate: '4.9', sales: '月售800+', eta: '34分钟', dist: '6.2km',
-            cover: 'assets/food/shop-binjolin.png',
+            cover: 'assets/food/shop-binjolin.jpg',
             items: [
-                { id: 'n1', img: 'assets/food/shop-binjolin.png', name: '蕉林轻食双人餐', tags: ['近期130人好评'], price: 66, origin: 88 },
-                { id: 'n2', img: 'assets/food/group-mushroom.png', name: '菌菇米线 小份', tags: ['本月点过2次'], price: 12.46, origin: 18 },
-                { id: 'n3', img: 'assets/food/group-chicken.png', name: '黄金鸡排堡 单点', tags: ['热门'], price: 10.43, origin: 15 }
+                { id: 'n1', img: 'assets/food/shop-binjolin.jpg', name: '蕉林轻食双人餐', tags: ['近期130人好评'], price: 66, origin: 88 },
+                { id: 'n2', img: 'assets/food/group-mushroom.jpg', name: '菌菇米线 小份', tags: ['本月点过2次'], price: 12.46, origin: 18 },
+                { id: 'n3', img: 'assets/food/group-chicken.jpg', name: '黄金鸡排堡 单点', tags: ['热门'], price: 10.43, origin: 15 }
             ]
         }
     };
 
     var FOOD_GROUP_ITEMS = {
-        gm: { name: '菌菇米线', price: 12.46, origin: 18, img: 'assets/food/group-mushroom.png', shop: '蒙自源', sales: '月售1800+', note: '本月点过2次' },
-        gc: { name: '黄金鸡排堡+牛肉双拼套餐', price: 10.43, origin: 21, img: 'assets/food/group-chicken.png', shop: 'KAOLA YOU MI', sales: '月售2600+', note: '热门榜店铺' },
-        gb: { name: '农家一碗香木桶饭', price: 11.5, origin: 19, img: 'assets/food/group-bowl.png', shop: '农家小碗菜', sales: '月售900+', note: '点过该店' }
+        gm: { name: '菌菇米线', price: 12.46, origin: 18, img: 'assets/food/group-mushroom.jpg', shop: '蒙自源', sales: '月售1800+', note: '本月点过2次' },
+        gc: { name: '黄金鸡排堡+牛肉双拼套餐', price: 10.43, origin: 21, img: 'assets/food/group-chicken.jpg', shop: 'KAOLA YOU MI', sales: '月售2600+', note: '热门榜店铺' },
+        gb: { name: '农家一碗香木桶饭', price: 11.5, origin: 19, img: 'assets/food/group-bowl.jpg', shop: '农家小碗菜', sales: '月售900+', note: '点过该店' }
     };
 
     function renderFoodShop(shopId) {
@@ -1973,7 +1973,7 @@
         }
         var data = it || g;
         if (!data) {
-            data = { name: '商品', price: 0, img: 'assets/food/group-bowl.png', sales: '', note: '' };
+            data = { name: '商品', price: 0, img: 'assets/food/group-bowl.jpg', sales: '', note: '' };
         }
         var title = data.name;
         var img = data.img;
