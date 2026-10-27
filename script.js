@@ -1042,6 +1042,15 @@
         return n < 10 ? '0' + n : '' + n;
     }
 
+    // 手机号掩码：前 3 + **** + 后 4（如 11451419191 → 114****9191）
+    function maskPhone(p) {
+        var v = String(p || '').replace(/\s+/g, '');
+        if (v.length < 7) {
+            return v || '114****9191';
+        }
+        return v.slice(0, 3) + '****' + v.slice(-4);
+    }
+
     function fmtClock(d) {
         return pad2(d.getHours()) + ':' + pad2(d.getMinutes());
     }
@@ -1120,6 +1129,21 @@
         return '<img class="' + (cls || '') + '" src="' + assetUrl(src) + '" alt="' + (alt || '') + '" draggable="false">';
     }
 
+    // 我的页信息流卡片：图片层（距离/角标叠加）+ 文字层
+    function feedCard(img, name, desc, price, distance, shop, badge, shipTag) {
+        return '<div class="food-feed__item">' +
+            '<div class="food-feed__pic">' +
+                foodImg('assets/food/' + img + '.png', 'food-feed__img') +
+
+            '</div>' +
+            '<div class="food-feed__body">' +
+                '<div class="food-feed__name">' + name + '</div>' +
+                '<div class="food-feed__meta">' + desc + '</div>' +
+                (price ? '<div class="food-feed__price"><b>¥' + price + '</b><em>预估到手</em></div>' : '') +
+                (shop ? '<div class="food-feed__ship"><span>' + shop + '</span>' + (shipTag ? '<b>' + shipTag + '</b>' : '') + '</div>' : '') +
+            '</div></div>';
+    }
+
     function foodTabbar(active) {
         var tabs = [
             { key: 'home', label: '推荐', icon: 'assets/food/tab-home-a.png', action: 'food-home' },
@@ -1190,7 +1214,7 @@
                 '<div class="food-me-head">' +
                     '<div class="food-me-user">' +
                         '<span class="food-me-avatar"></span>' +
-                        '<span class="food-me-phone">135****3167</span>' +
+                        '<span class="food-me-phone">' + maskPhone(foodAddr.phone) + '</span>' +
                     '</div>' +
                     '<button type="button" class="food-me-gear" aria-label="设置">' +
                         '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>' +
@@ -1212,7 +1236,7 @@
                     }).join('') + '</div>' +
                 '</div>' +
                 '<div class="food-card food-delivering" data-food-go="food-order-detail">' +
-                    foodImg('assets/food/logo-merchant-delivering.png', 'food-delivering__logo') +
+                    foodImg('assets/food/logo-yihengtong.png', 'food-delivering__logo') +
                     '<div class="food-delivering__main">' +
                         '<div class="food-delivering__row"><span class="food-delivering__title">商家正在送货</span>' +
                             '<span class="food-delivering__count">共2件</span></div>' +
@@ -1262,34 +1286,25 @@
                     }).join('') + '</div>' +
                 '</div>' +
                 '<div class="food-feed">' +
-                    '<div class="food-card food-taste">' +
-                        '<div class="food-card__hd"><h3 class="food-card__title">口味档案</h3></div>' +
-                        '<div class="food-taste__row">' + foodImg('assets/food/icon-bookmark.png', 'food-taste__icon') +
-                            '<span class="food-taste__link">编辑偏好后更懂你</span>' +
-                            '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7C8794" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>' +
-                        '<div class="food-taste__stats">' +
-                            '<div><b>298</b><i>次</i><span>累计点餐</span></div>' +
-                            '<div><b>微辣</b><span>辣度偏好</span></div>' +
-                        '</div>' +
+                    '<div class="food-feed__col">' +
+                        '<div class="food-card food-taste">' +
+                            '<div class="food-card__hd"><h3 class="food-card__title">口味档案</h3></div>' +
+                            '<div class="food-taste__row">' + foodImg('assets/food/icon-bookmark.png', 'food-taste__icon') +
+                                '<span class="food-taste__link">编辑偏好后更懂你</span>' +
+                                '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#7C8794" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>' +
+                            '<div class="food-taste__stats">' +
+                                '<div><b>298</b><i>次</i><span>累计点餐</span></div>' +
+                                '<div><b>微辣</b><span>辣度偏好</span></div>' +
+                            '</div>' +
+                        '</div>' + feedCard('feed-garlic', '蒜苔炒肉（不含饭）', '口感丰富，独特的风味', '20', '25分钟 4.9km', '嘎嘎好吃东北老饭盒', '', '') +
+                        feedCard('feed-chickenpot', '【新客专享】星厨葱油鸡...', '掌柜说：保温包装', '', '36分钟 4.4km', '', '新客专享', '') +
                     '</div>' +
-                    '<div class="food-feed__list">' +
-                        '<div class="food-feed__item">' + foodImg('assets/food/food-burger-combo.png', 'food-feed__img') +
-                            '<span class="food-feed__tag">50分钟 2.3km</span>' +
-                            '<div class="food-feed__body"><div class="food-feed__name">【高性价比】自选·单人餐</div>' +
-                            '<div class="food-feed__meta">好评数100+ | 回头客700+</div>' +
-                            '<div class="food-feed__price"><i>直降20.2元</i><b>¥21.8</b><em>预估到手 ¥42</em></div>' +
-                            '<div class="food-feed__ship"><span>杰西五烤鸡汉堡(...</span><b>免配送费</b></div></div>' +
-                        '</div>' +
-                        '<div class="food-feed__item">' + foodImg('assets/food/food-roast-chicken.png', 'food-feed__img') +
-                            '<span class="food-feed__tag">49分钟 2.4km</span>' +
-                            '<div class="food-feed__body"><div class="food-feed__name">烤鸡任选+主食任选+小吃...</div>' +
-                            '<div class="food-feed__meta">顾客常点的热门选择</div>' +
-                            '<div class="food-feed__price"><i>直降11元</i><b>¥25.99</b><em>预估到手 ¥36.99</em></div>' +
-                            '<div class="food-feed__ship"><span>箐筵·荷叶烤鸡(...</span><b>免配送费</b></div></div>' +
-                        '</div>' +
+                    '<div class="food-feed__col">' +
+                        feedCard('feed-salad', '豪华双拼·炙烤牛鸡健康餐...', '顾客常点的热门选择', '28.9', '21分钟 2.6km', '蔬三时·轻食·健康', '', '免配送费') +
+                        feedCard('feed-yogurt', '冰蓝蔓越莓酸奶', '好评率100% | 本店热销TOP2', '15.9', '29分钟 5km', '茶瀑布', '', '') +
+                        feedCard('feed-friedchicken', '汉森炸鸡 双人桶', '现点现炸 外酥里嫩', '39.9', '32分钟 5.8km', '汉森炸鸡', '', '') +
                     '</div>' +
                 '</div>' +
-                '<div class="food-me-backtip" data-food-go="workbench">企业微信工作台<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#9AA1AE" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>' +
                 '<div class="food-me-tail"></div>' +
             '</div>' +
             foodTabbar('me');
@@ -1736,7 +1751,6 @@
                     return '<span class="home-tabs__item' + (t.on ? ' home-tabs__item--on' : '') + '">' +
                         (t.ico ? foodImg(t.ico, 'home-tabs__ico') : '') + t.label + '</span>';
                 }).join('') +
-                    foodImg('assets/food/icon-grid.png', 'home-tabs__grid') +
                 '</div>' +
                 '<div class="home-cats">' + cats.map(function (c) {
                     return '<div class="home-cat">' + foodImg(c.icon, 'home-cat__icon') +

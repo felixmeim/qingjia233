@@ -2551,3 +2551,93 @@ body.is-wxwork .form-topbar__link {
     font-size: 16px;
     font-family: inherit;
 }
+/* ============================================================
+   第四轮：首页 tabs 滚动条隐藏 / 双卡统一 / 我的页两列瀑布流
+   ============================================================ */
+/* tabs 横滚不显示滚动条 */
+.home-tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.home-tabs::-webkit-scrollbar { display: none; height: 0; }
+
+/* 爆品团 / 天猫超市 双卡统一尺寸 */
+.home-duo__card {
+    display: flex;
+    flex-direction: column;
+    min-height: 108px;
+}
+.home-duo__body { flex: 1 1 auto; }
+.home-duo__img { width: 52px; height: 52px; flex: 0 0 52px; }
+.home-duo__txt { flex: 1 1 auto; }
+.home-duo__name {
+    min-height: 34px;
+    font-size: 13px;
+    line-height: 17px;
+}
+.home-duo__price { margin-top: auto; align-items: baseline; }
+
+/* 我的页两列瀑布流 */
+.food-feed {
+    display: flex;
+    gap: 8px;
+    padding: 0 12px;
+    align-items: flex-start;
+}
+.food-feed__col {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.food-feed__col .food-card,
+.food-feed__col .food-feed__item { margin: 0; }
+.food-feed__col .food-card.food-taste { width: auto; padding: 14px 12px; }
+.food-feed__img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+}
+.food-feed__badge {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    background: #FF8A3D;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 2px 6px;
+}
+.food-feed__item { position: relative; }
+.food-feed__tag { top: auto; bottom: 116px; }
+/* 信息流卡片：图片叠加层 */
+.food-feed__pic { position: relative; }
+.food-feed__item .food-feed__img { border-radius: 12px 12px 0 0; }
+.food-feed__item .food-feed__tag {
+    position: absolute;
+    left: 8px;
+    bottom: 8px;
+    top: auto;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-size: 10.5px;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+.food-feed__item .food-feed__badge {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    background: #FF7A2E;
+    color: #fff;
+    font-size: 10px;
+    border-radius: 4px;
+    padding: 2px 6px;
+}
+.food-feed__item .food-feed__name { font-size: 14px; line-height: 19px; }
+.food-feed__item .food-feed__price { margin-top: 6px; }
+.food-feed__item .food-feed__ship { margin-top: 6px; }

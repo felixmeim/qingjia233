@@ -851,5 +851,55 @@
   "w": 692,
   "h": 168,
   "note": "整条白底双卡横条，含两卡标题/角标/商品图/价格，保留 ad-alt.png 未删"
+ },
+ {
+  "file": "food/feed-salad.png",
+  "label": "信息流-SUPER SALAD 蔬三时 豪华双拼沙拉",
+  "source": "food-9-me-feed.jpg",
+  "x": 552,
+  "y": 348,
+  "w": 505,
+  "h": 506,
+  "note": "源 505px 宽截图区域，等比缩到 400 宽"
+ },
+ {
+  "file": "food/feed-garlic.png",
+  "label": "信息流-蒜苔炒肉（不含饭）",
+  "source": "food-9-me-feed.jpg",
+  "x": 23,
+  "y": 794,
+  "w": 505,
+  "h": 506,
+  "note": "源 505px 宽截图区域，等比缩到 400 宽"
+ },
+ {
+  "file": "food/feed-yogurt.png",
+  "label": "信息流-茶瀑布 冰蓝蔓越莓酸奶",
+  "source": "food-9-me-feed.jpg",
+  "x": 552,
+  "y": 1163,
+  "w": 505,
+  "h": 504,
+  "note": "源 505px 宽截图区域，等比缩到 400 宽"
+ },
+ {
+  "file": "food/feed-chickenpot.png",
+  "label": "信息流-【新客专享】星厨葱油鸡（砂锅）",
+  "source": "food-9-me-feed.jpg",
+  "x": 23,
+  "y": 1609,
+  "w": 505,
+  "h": 504,
+  "note": "源 505px 宽截图区域，等比缩到 400 宽"
+ },
+ {
+  "file": "food/feed-friedchicken.png",
+  "label": "信息流-汉森炸鸡（底部被 tabbar 截断）",
+  "source": "food-9-me-feed.jpg",
+  "x": 552,
+  "y": 1975,
+  "w": 505,
+  "h": 233,
+  "note": "卡片底部被 tabbar/AI 按钮遮挡，只能截到可见部分，等比缩到 400 宽"
  }
 ]
