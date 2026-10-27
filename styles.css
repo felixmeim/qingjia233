@@ -2715,3 +2715,189 @@ body.is-wxwork .form-topbar__link {
     font-size: 15px;
     font-family: inherit;
 }
+/* ============================================================
+   第六轮：黑屏过场 / 请假加载过场 / 改名弹窗
+   ============================================================ */
+/* 黑屏过场（密码正确后 2 秒，再进企微） */
+#screen-splash { background: #000; }
+.splash {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    gap: 0;
+}
+.splash__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 26px;
+    animation: splash-pulse 1.8s ease-in-out infinite;
+}
+.splash__ai {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #6E9BF3 0%, #9B72F5 55%, #F26BA8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+}
+.splash__logo-img { width: 76px; height: 76px; object-fit: contain; }
+@keyframes splash-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.72; transform: scale(0.94); }
+}
+.splash__title {
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+}
+.splash__sub {
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 12.5px;
+    margin-top: 10px;
+    letter-spacing: 0.2px;
+}
+
+/* 请假管理加载过场 */
+.ll-nav {
+    flex: 0 0 auto;
+    height: 56px;
+    background: #0B0B0B;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    position: relative;
+}
+.ll-nav__left { display: flex; gap: 2px; }
+.ll-nav__btn {
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+}
+.ll-nav__btn--more { margin-left: auto; }
+.ll-nav__title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+.ll-progress {
+    flex: 0 0 auto;
+    height: 3px;
+    background: #E3E7ED;
+    overflow: hidden;
+}
+.ll-progress i {
+    display: block;
+    height: 100%;
+    width: 40%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #1E6FE8, #4C9BFF);
+    animation: ll-run 1.5s cubic-bezier(0.5, 0, 0.35, 1) forwards;
+}
+@keyframes ll-run {
+    0% { width: 6%; margin-left: 0; }
+    35% { width: 46%; margin-left: 12%; }
+    70% { width: 30%; margin-left: 52%; }
+    100% { width: 44%; margin-left: 56%; }
+}
+.ll-crumb {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 40px;
+    padding: 0 14px;
+    background: #EAF3FF;
+    font-size: 14px;
+    color: #1B5FD9;
+}
+.ll-crumb__home { display: inline-flex; align-items: center; gap: 4px; }
+.ll-crumb__sep { color: #9DB6DE; }
+.ll-body {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #F2F6F9;
+    gap: 14px;
+}
+.ll-spinner {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 3px solid #E1E5EA;
+    border-top-color: #2E86E8;
+    animation: ll-spin 1.5s linear forwards;
+}
+@keyframes ll-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(900deg); }
+}
+.ll-text { font-size: 15px; color: #333; }
+
+/* 改名弹窗 */
+.name-edit {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.42);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 36px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.name-edit--on { opacity: 1; }
+.name-edit__card {
+    width: 100%;
+    max-width: 280px;
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 18px 16px;
+    transform: translateY(6px) scale(0.98);
+    transition: transform 0.2s ease;
+}
+.name-edit--on .name-edit__card { transform: translateY(0) scale(1); }
+.name-edit__title { font-size: 16px; font-weight: 600; color: #111; text-align: center; }
+.name-edit__input {
+    margin-top: 14px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #E1E4E8;
+    border-radius: 8px;
+    padding: 0 12px;
+    font-size: 15px;
+    font-family: inherit;
+    color: #111;
+    box-sizing: border-box;
+    outline: none;
+}
+.name-edit__input:focus { border-color: #4C9BFF; }
+.name-edit__acts { display: flex; gap: 10px; margin-top: 16px; }
+.name-edit__btn {
+    flex: 1 1 0;
+    height: 38px;
+    border: 0;
+    border-radius: 19px;
+    background: #F2F4F7;
+    color: #333;
+    font-size: 15px;
+    font-family: inherit;
+}
+.name-edit__btn--primary { background: #4C8AF5; color: #fff; }

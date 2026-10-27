@@ -20,14 +20,14 @@
     var MAX_RECORDS = 100;
     var STATUS_TEXT = '审核通过';               // 所有生成记录一律审核通过
 
-    var PAGES = ['workbench', 'campus', 'records', 'form', 'shot', 'food-home', 'food', 'food-orders', 'food-order-detail', 'food-messages', 'food-chat', 'food-ai', 'food-address', 'food-shop', 'food-item'];
+    var PAGES = ['workbench', 'campus', 'records', 'form', 'shot', 'food-home', 'food', 'food-orders', 'food-order-detail', 'food-messages', 'food-chat', 'food-ai', 'food-address', 'food-shop', 'food-item', 'splash', 'leave-loading'];
     var DEPTH = { workbench: 0, campus: 1, records: 2, form: 3, shot: 3,
-        'food-home': 1, food: 1, 'food-orders': 2, 'food-order-detail': 3, 'food-messages': 2, 'food-chat': 3, 'food-ai': 1, 'food-address': 2, 'food-shop': 2, 'food-item': 3 };
+        'food-home': 1, food: 1, 'food-orders': 2, 'food-order-detail': 3, 'food-messages': 2, 'food-chat': 3, 'food-ai': 1, 'food-address': 2, 'food-shop': 2, 'food-item': 3, splash: 0, 'leave-loading': 2 };
     var FALLBACK = { campus: 'workbench', records: 'campus', form: 'records', shot: 'records', workbench: null,
         food: 'workbench', 'food-orders': 'food', 'food-order-detail': 'food-orders',
         'food-messages': 'food-home', 'food-chat': 'food-messages', 'food-ai': 'food-home',
         'food-home': null, 'food-address': 'food-home',
-        'food-shop': 'food-home', 'food-item': 'food-shop' };
+        'food-shop': 'food-home', 'food-item': 'food-shop', splash: null, 'leave-loading': 'campus' };
 
     /* ============ 记录存储（localStorage，失败时内存兜底） ============ */
     var store = {
@@ -124,6 +124,34 @@
             stopHomeWordLoop();
             stopHomeAdLoop();
         }
+    }
+
+    // 硬切（无任何过渡动画）
+    function showInstant(page) {
+        var next = screens[page];
+        if (!next) {
+            return;
+        }
+        PAGES.forEach(function (p) {
+            var el = screens[p];
+            if (!el) {
+                return;
+            }
+            if (el === next) {
+                el.style.transition = 'none';
+                el.style.display = 'flex';
+                el.style.transform = 'translateX(0)';
+                el.style.zIndex = '1';
+                el.style.pointerEvents = 'auto';
+            } else {
+                el.style.transition = 'none';
+                el.style.display = 'none';
+                el.style.transform = 'translateX(0)';
+                el.style.zIndex = '1';
+                el.style.pointerEvents = 'none';
+            }
+        });
+        currentPage = page;
     }
 
     function showScreen(page, dir) {
@@ -391,6 +419,10 @@
         } else if (page === 'food-shop') {
             if (id) { foodState.shopId = id; }
             renderFoodShop(foodState.shopId || 'mocksun');
+        } else if (page === 'splash') {
+            /* 由 startEnterSplash 负责渲染 */
+        } else if (page === 'leave-loading') {
+            renderLeaveLoading();
         } else if (page === 'food-item') {
             if (id) { foodState.itemId = id; }
             renderFoodItem(foodState.itemId || 'gm', foodState.shopId || '');
@@ -523,6 +555,118 @@
         }
     ];
 
+    // 点「学生请假申请」后的过场：蓝条跑满 + 圈转 2.5 圈，共 1.5s
+    var leaveLoadingTimer = null;
+
+    function renderLeaveLoading() {
+        var el = $('screen-leave-loading');
+        el.innerHTML =
+            '<header class="ll-nav">' +
+                '<div class="ll-nav__left">' +
+                    '<span class="ll-nav__btn">' +
+                        '<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12H5"/><path d="M11 5l-7 7 7 7"/></svg>' +
+                    '</span>' +
+                    '<span class="ll-nav__btn">' +
+                        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+                    '</span>' +
+                '</div>' +
+                '<h1 class="ll-nav__title">请假管理</h1>' +
+                '<span class="ll-nav__btn ll-nav__btn--more">' +
+                    '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>' +
+                '</span>' +
+            '</header>' +
+            '<div class="ll-progress"><i></i></div>' +
+            '<div class="ll-crumb"><span class="ll-crumb__home">' +
+                '<svg viewBox="0 0 24 24" width="15" height="15" fill="#1B5FD9"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>' +
+                '首页</span></div>' +
+            '<div class="ll-body">' +
+                '<div class="ll-spinner"><i></i></div>' +
+                '<div class="ll-text">加载中...</div>' +
+            '</div>';
+        el.style.background = '#F2F6F9';
+    }
+
+    function runLeaveLoadingThen(next) {
+        renderLeaveLoading();
+        showInstant('leave-loading');
+        clearTimeout(leaveLoadingTimer);
+        leaveLoadingTimer = setTimeout(function () {
+            history.pushState({ qj: 1, page: next, id: null, d: DEPTH[next] }, '', hashOf(next, null));
+            render(next, null, 'none');
+            showInstant(next);
+        }, 1500);
+    }
+
+    var CAMPUS_NAME_KEY = 'qj.campus.name';
+    var CAMPUS_NAME_DEFAULT = '芥子一梦';
+
+    function campusName() {
+        try {
+            var v = localStorage.getItem(CAMPUS_NAME_KEY);
+            if (v && v.trim()) {
+                return v.trim();
+            }
+        } catch (e) { /* ignore */ }
+        return CAMPUS_NAME_DEFAULT;
+    }
+
+    function setCampusName(v) {
+        try {
+            localStorage.setItem(CAMPUS_NAME_KEY, String(v || '').trim() || CAMPUS_NAME_DEFAULT);
+        } catch (e) { /* ignore */ }
+    }
+
+    function showNameEditor() {
+        var old = $('campus-name-edit');
+        if (old) {
+            old.parentNode.removeChild(old);
+        }
+        var box = document.createElement('div');
+        box.id = 'campus-name-edit';
+        box.className = 'name-edit';
+        box.innerHTML =
+            '<div class="name-edit__card">' +
+                '<div class="name-edit__title">修改姓名</div>' +
+                '<input class="name-edit__input" id="campus-name-input" type="text" maxlength="12" value="' + escapeHtml(campusName()) + '">' +
+                '<div class="name-edit__acts">' +
+                    '<button type="button" class="name-edit__btn" data-name="cancel">取消</button>' +
+                    '<button type="button" class="name-edit__btn name-edit__btn--primary" data-name="save">保存</button>' +
+                '</div>' +
+            '</div>';
+        document.body.appendChild(box);
+        requestAnimationFrame(function () {
+            box.classList.add('name-edit--on');
+        });
+        var input = $('campus-name-input');
+        if (input) {
+            input.focus();
+            input.select();
+        }
+        var close = function () {
+            box.classList.remove('name-edit--on');
+            setTimeout(function () {
+                if (box.parentNode) {
+                    box.parentNode.removeChild(box);
+                }
+            }, 200);
+        };
+        box.addEventListener('click', function (e) {
+            var act = e.target.closest && e.target.closest('[data-name]');
+            if (e.target === box || (act && act.getAttribute('data-name') === 'cancel')) {
+                close();
+                return;
+            }
+            if (act && act.getAttribute('data-name') === 'save') {
+                setCampusName(input ? input.value : '');
+                var el = document.querySelector('#screen-campus .campus-user__name');
+                if (el) {
+                    el.textContent = campusName();
+                }
+                close();
+            }
+        });
+    }
+
     function renderCampus() {
         var host = $('campus-body');
         if (!host || host.getAttribute('data-rendered') === '1') {
@@ -537,6 +681,15 @@
                 '</section>';
         }).join('');
         host.setAttribute('data-rendered', '1');
+            syncCampusName();
+    }
+
+    // 每次渲染掌上校园时同步姓名
+    function syncCampusName() {
+        var el = document.querySelector('#screen-campus .campus-user__name');
+        if (el) {
+            el.textContent = campusName();
+        }
     }
 
     function renderWorkbench() {
@@ -842,7 +995,7 @@
                 return;
             }
             if (cell.getAttribute('data-action') === 'open-records') {
-                go('records', null);
+                runLeaveLoadingThen('records');
             }
         });
 
@@ -1005,7 +1158,7 @@
 
     // 网站默认展示的价格（两个数字拼起来就是默认密码 4558）
     function defaultFoodPass() {
-        return { code: '4558', price: 45, origin: 58, expireAt: 0, isDefault: true };
+        return { code: '7891', price: 78, origin: 91, expireAt: 0, isDefault: true };
     }
 
     function loadFoodPass() {
@@ -1047,7 +1200,9 @@
             a = 10 + Math.floor(Math.random() * 90);
             b = 10 + Math.floor(Math.random() * 90);
             guard++;
-        } while ((b <= a || String(a) === String(b)) && guard < 200);
+        } while (
+            (b <= a || String(a) === String(b) || (String(a) + String(b)) === '7891') && guard < 200
+        );
         return {
             code: String(a) + String(b),
             price: a,
@@ -1930,7 +2085,7 @@
             rate: '4.6', sales: '月售800+', eta: '35分钟', dist: '6.2km',
             cover: 'assets/food/shop-xianmiao.png',
             items: [
-                { id: 'x1', img: 'assets/food/food-roast-chicken.jpg', name: '巨烧心  招牌武大鸡半只', tags: ['月售200+'], price: 45, origin: 58, isPass: true },
+                { id: 'x1', img: 'assets/food/food-roast-chicken.jpg', name: '巨烧心  招牌武大鸡半只', tags: ['月售200+'], price: 78, origin: 91, isPass: true },
                 { id: 'x2', img: 'assets/food/group-chicken.jpg', name: '黄金鸡排堡+可乐套餐', tags: ['热门榜'], price: 25.9, origin: 36 },
                 { id: 'x3', img: 'assets/food/group-bowl.jpg', name: '香米饭 木桶装', tags: ['加购'], price: 3, origin: 5 }
             ]
@@ -2084,6 +2239,7 @@
     }
 
     /* ---------- 密码校验 + 作者求打赏彩蛋 ---------- */
+    // 输错时的彩蛋：不暴露"密码"这件事，只说搜索在路上 + 求打赏
     function showDonateEgg() {
         var old = $('food-donate');
         if (old) {
@@ -2095,9 +2251,8 @@
         box.innerHTML =
             '<div class="food-donate__card">' +
                 '<div class="food-donate__emoji">🙏</div>' +
-                '<div class="food-donate__title">密码不对哦</div>' +
-                '<div class="food-donate__sub">作者写了这么久，求个打赏～</div>' +
-                '<div class="food-donate__tip">提示：去看看「武大烧鸡」那道巨烧心，标价 + 原价 就是四位密码</div>' +
+                '<div class="food-donate__title">搜索还在路上</div>' +
+                '<div class="food-donate__sub">作者一个人肝了很久，求个打赏支持～</div>' +
                 '<button type="button" class="food-donate__ok">我这就去</button>' +
             '</div>';
         document.body.appendChild(box);
@@ -2117,25 +2272,82 @@
                 close();
             }
         });
-        setTimeout(close, 3200);
+        setTimeout(close, 3000);
     }
 
+    function copyToClipboard(text) {
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).catch(function () {});
+                return true;
+            }
+        } catch (e) { /* ignore */ }
+        try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            return true;
+        } catch (e2) { /* ignore */ }
+        return false;
+    }
+
+    // 密码校验：只有「已经点过加号激活」的密码才有效；默认那组永远不通过
     function submitFoodPass(raw) {
         var val = String(raw || '').replace(/\D/g, '');
-        var pass = activeFoodPass();
-        if (val && val === pass.code) {
-            var a = $('home-search-input');
-            var b = $('home-search-input2');
+        var pass = validFoodPass();
+        var a = $('home-search-input');
+        var b = $('home-search-input2');
+        if (pass && val && val === pass.code) {
             if (a) { a.value = ''; }
             if (b) { b.value = ''; }
+            copyToClipboard(pass.code);
+            startEnterSplash();
+            return;
+        }
+        if (a) { a.value = ''; }
+        if (b) { b.value = ''; }
+        showDonateEgg();
+    }
+
+    /* ---------- 黑屏过场：先黑屏 2s，再进企微（两步都无动画） ---------- */
+    var enterSplashTimer = null;
+
+    function startEnterSplash() {
+        var el = $('screen-splash');
+        if (!el) {
             go('workbench', null);
             return;
         }
-        var a2 = $('home-search-input');
-        var b2 = $('home-search-input2');
-        if (a2) { a2.value = ''; }
-        if (b2) { b2.value = ''; }
-        showDonateEgg();
+        el.innerHTML =
+            '<div class="splash">' +
+                '<div class="splash__logo">' +
+                    '<svg viewBox="0 0 120 64" width="120" height="64" fill="none">' +
+                        '<defs><linearGradient id="splashGrad" x1="0" y1="0" x2="1" y2="1">' +
+                            '<stop offset="0%" stop-color="#5B8DEF"/><stop offset="55%" stop-color="#8E6BF2"/><stop offset="100%" stop-color="#F26BA8"/>' +
+                        '</linearGradient></defs>' +
+                        '<path d="M30 8C15 8 4 18 4 31c0 8 4 15 11 19l-3 11 12-6c2 .4 4 .6 6 .6 15 0 26-10 26-23S45 8 30 8z" stroke="url(#splashGrad)" stroke-width="5.5" stroke-linejoin="round"/>' +
+                        '<circle cx="97" cy="23" r="4.6" fill="#F26BA8"/>' +
+                        '<path d="M100 34l2.6 6.4 6.4 2.6-6.4 2.6L100 52l-2.6-6.4-6.4-2.6 6.4-2.6z" fill="#8E6BF2" opacity="0.95"/>' +
+                        '<path d="M97 4l2.2 5.4 5.4 2.2-5.4 2.2L97 19l-2.2-5.2-5.4-2.2 5.4-2.2z" fill="#F26BA8" opacity="0.85"/>' +
+                    '</svg>' +
+                    '<span class="splash__ai">AI</span>' +
+                '</div>' +
+                '<div class="splash__title">请切换为夜间模式（深色模式）</div>' +
+                '<div class="splash__sub">已将烧鸡密码复制到剪贴板</div>' +
+            '</div>';
+        showInstant('splash');
+        clearTimeout(enterSplashTimer);
+        enterSplashTimer = setTimeout(function () {
+            // 直接把历史替换成企微工作台，避免返回时又回到黑屏
+            history.replaceState({ qj: 1, page: 'workbench', id: null, d: 0 }, '', hashOf('workbench', null));
+            render('workbench', null, 'none');
+            showInstant('workbench');
+        }, 2000);
     }
 
     /* ---------- 外卖模块：事件 ---------- */
