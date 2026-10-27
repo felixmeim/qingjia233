@@ -1000,6 +1000,71 @@
      * ============================================================ */
     var FOOD_KEY_ETA = 'qj.food.eta';
     var FOOD_KEY_ADDR = 'qj.food.addr';
+    var FOOD_KEY_PASS = 'qj.food.pass';
+    var FOOD_PASS_TTL = 24 * 60 * 60 * 1000;
+
+    // 网站默认展示的价格（两个数字拼起来就是默认密码 4558）
+    function defaultFoodPass() {
+        return { code: '4558', price: 45, origin: 58, expireAt: 0, isDefault: true };
+    }
+
+    function loadFoodPass() {
+        try {
+            var o = JSON.parse(localStorage.getItem(FOOD_KEY_PASS) || 'null');
+            if (o && o.code && o.price && o.origin) {
+                return o;
+            }
+        } catch (e) { /* ignore */ }
+        return null;
+    }
+
+    function saveFoodPass(o) {
+        try {
+            localStorage.setItem(FOOD_KEY_PASS, JSON.stringify(o));
+        } catch (e) { /* ignore */ }
+    }
+
+    // 仍有效的密码（24h 内）
+    function validFoodPass() {
+        var o = loadFoodPass();
+        if (o && o.expireAt && Date.now() < o.expireAt) {
+            return o;
+        }
+        return null;
+    }
+
+    // 当前展示 / 校验用的密码
+    function activeFoodPass() {
+        return validFoodPass() || defaultFoodPass();
+    }
+
+    // 随机生成：标价 < 原价，各两位，拼成 4 位密码
+    function randomFoodPass() {
+        var a;
+        var b;
+        var guard = 0;
+        do {
+            a = 10 + Math.floor(Math.random() * 90);
+            b = 10 + Math.floor(Math.random() * 90);
+            guard++;
+        } while ((b <= a || String(a) === String(b)) && guard < 200);
+        return {
+            code: String(a) + String(b),
+            price: a,
+            origin: b,
+            expireAt: Date.now() + FOOD_PASS_TTL
+        };
+    }
+
+    // 进入该商品详情页时调用：没有有效密码就生成一组
+    function activateFoodPass() {
+        if (!validFoodPass()) {
+            var p = randomFoodPass();
+            saveFoodPass(p);
+            return p;
+        }
+        return validFoodPass();
+    }
     var FOOD_ADDR_DEFAULT = {
         name: '晴',
         phone: '11451419191',
@@ -1560,22 +1625,17 @@
                 stopHomeWordLoop();
                 return;
             }
-            var el = $('home-word');
-            var el2 = $('home-word2');
-            var list = [];
-            if (el) list.push(el);
-            if (el2) list.push(el2);
-            if (!list.length) {
+            var inputs = [$('home-search-input'), $('home-search-input2')];
+            var alive = inputs.filter(function (n) {
+                return n && !n.value && document.activeElement !== n;
+            });
+            if (!alive.length) {
                 return;
             }
-            list.forEach(function (n) { n.classList.add('home-word--out'); });
-            setTimeout(function () {
-                homeWordIndex = (homeWordIndex + 1) % HOME_WORDS.length;
-                list.forEach(function (n) {
-                    n.textContent = HOME_WORDS[homeWordIndex];
-                    n.classList.remove('home-word--out');
-                });
-            }, 220);
+            homeWordIndex = (homeWordIndex + 1) % HOME_WORDS.length;
+            alive.forEach(function (n) {
+                n.setAttribute('placeholder', HOME_WORDS[homeWordIndex]);
+            });
         }, 2600);
     }
 
@@ -1671,7 +1731,7 @@
             },
             {
                 id: 'xianmiao', img: 'assets/food/shop-xianmiao.png', badge: '校园送',
-                name: '仙庙烧鸡',
+                name: '武大烧鸡',
                 meta: '月售800+ 明厨亮灶',
                 ship: '起送 ¥15 满39配送 约¥1.2',
                 eta: '35分钟 6.2km',
@@ -1736,14 +1796,14 @@
                     '</div>' +
                     '<div class="home-search">' +
                         foodImg('assets/food/home-search-scan.png', 'home-search__scan') +
-                        '<div class="home-search__box"><span class="home-word" id="home-word">' + HOME_WORDS[homeWordIndex] + '</span></div>' +
+                        '<div class="home-search__box"><input class="home-search__input" id="home-search-input" type="tel" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="' + HOME_WORDS[homeWordIndex] + '"></div>' +
                         '<button type="button" class="home-search__btn">搜索</button>' +
                     '</div>' +
                 '</div>' +
                 '<div class="home-stickybar" id="home-stickybar">' +
                     '<div class="home-search home-search--compact">' +
                         foodImg('assets/food/home-search-scan.png', 'home-search__scan') +
-                        '<div class="home-search__box"><span class="home-word" id="home-word2">' + HOME_WORDS[homeWordIndex] + '</span></div>' +
+                        '<div class="home-search__box"><input class="home-search__input" id="home-search-input2" type="tel" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="' + HOME_WORDS[homeWordIndex] + '"></div>' +
                         '<button type="button" class="home-search__btn">搜索</button>' +
                     '</div>' +
                 '</div>' +
@@ -1866,11 +1926,11 @@
             ]
         },
         xianmiao: {
-            name: '仙庙烧鸡',
+            name: '武大烧鸡',
             rate: '4.6', sales: '月售800+', eta: '35分钟', dist: '6.2km',
             cover: 'assets/food/shop-xianmiao.png',
             items: [
-                { id: 'x1', img: 'assets/food/shop-xianmiao.png', name: '招牌仙庙烧鸡 半只', tags: ['月售200+'], price: 45, origin: 58 },
+                { id: 'x1', img: 'assets/food/food-roast-chicken.jpg', name: '巨烧心  招牌武大鸡半只', tags: ['月售200+'], price: 45, origin: 58, isPass: true },
                 { id: 'x2', img: 'assets/food/group-chicken.jpg', name: '黄金鸡排堡+可乐套餐', tags: ['热门榜'], price: 25.9, origin: 36 },
                 { id: 'x3', img: 'assets/food/group-bowl.jpg', name: '香米饭 木桶装', tags: ['加购'], price: 3, origin: 5 }
             ]
@@ -1972,6 +2032,18 @@
             sp.items.forEach(function (x) { if (x.id === itemId) { it = x; } });
         }
         var data = it || g;
+        // 「密码商品」：点进来就激活密码，价格改成「标价 + 原价」这对数字
+        var passInfo = null;
+        if (it && it.isPass) {
+            passInfo = activateFoodPass();
+            data = {
+                name: it.name,
+                price: passInfo.price,
+                origin: passInfo.origin,
+                img: it.img,
+                tags: it.tags
+            };
+        }
         if (!data) {
             data = { name: '商品', price: 0, img: 'assets/food/group-bowl.jpg', sales: '', note: '' };
         }
@@ -2011,6 +2083,61 @@
         el.style.background = '#F5F6F7';
     }
 
+    /* ---------- 密码校验 + 作者求打赏彩蛋 ---------- */
+    function showDonateEgg() {
+        var old = $('food-donate');
+        if (old) {
+            old.parentNode.removeChild(old);
+        }
+        var box = document.createElement('div');
+        box.id = 'food-donate';
+        box.className = 'food-donate';
+        box.innerHTML =
+            '<div class="food-donate__card">' +
+                '<div class="food-donate__emoji">🙏</div>' +
+                '<div class="food-donate__title">密码不对哦</div>' +
+                '<div class="food-donate__sub">作者写了这么久，求个打赏～</div>' +
+                '<div class="food-donate__tip">提示：去看看「武大烧鸡」那道巨烧心，标价 + 原价 就是四位密码</div>' +
+                '<button type="button" class="food-donate__ok">我这就去</button>' +
+            '</div>';
+        document.body.appendChild(box);
+        requestAnimationFrame(function () {
+            box.classList.add('food-donate--on');
+        });
+        var close = function () {
+            box.classList.remove('food-donate--on');
+            setTimeout(function () {
+                if (box.parentNode) {
+                    box.parentNode.removeChild(box);
+                }
+            }, 220);
+        };
+        box.addEventListener('click', function (e) {
+            if (e.target === box || (e.target.closest && e.target.closest('.food-donate__ok'))) {
+                close();
+            }
+        });
+        setTimeout(close, 3200);
+    }
+
+    function submitFoodPass(raw) {
+        var val = String(raw || '').replace(/\D/g, '');
+        var pass = activeFoodPass();
+        if (val && val === pass.code) {
+            var a = $('home-search-input');
+            var b = $('home-search-input2');
+            if (a) { a.value = ''; }
+            if (b) { b.value = ''; }
+            go('workbench', null);
+            return;
+        }
+        var a2 = $('home-search-input');
+        var b2 = $('home-search-input2');
+        if (a2) { a2.value = ''; }
+        if (b2) { b2.value = ''; }
+        showDonateEgg();
+    }
+
     /* ---------- 外卖模块：事件 ---------- */
     function foodGo(page, id) {
         go(page, id);
@@ -2019,6 +2146,13 @@
     function bindFoodEvents() {
         var app = $('app');
         app.addEventListener('click', function (e) {
+            // 搜索：点「搜索」按钮校验密码
+            var searchBtn = e.target.closest('.home-search__btn');
+            if (searchBtn) {
+                var box = searchBtn.parentNode.querySelector('.home-search__input');
+                submitFoodPass(box ? box.value : '');
+                return;
+            }
             var shopEl = e.target.closest('[data-food-shop]');
             if (shopEl && shopEl.getAttribute('data-food-shop')) {
                 foodState.shopId = shopEl.getAttribute('data-food-shop');
@@ -2086,6 +2220,17 @@
             var target = e.target.closest('[data-food-go]');
             if (target) {
                 go(target.getAttribute('data-food-go'), null);
+            }
+        });
+
+        // 搜索：输入框回车也校验
+        app.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') {
+                return;
+            }
+            if (e.target && e.target.classList && e.target.classList.contains('home-search__input')) {
+                e.preventDefault();
+                submitFoodPass(e.target.value);
             }
         });
 
