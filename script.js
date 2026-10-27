@@ -1133,7 +1133,7 @@
     function feedCard(img, name, desc, price, distance, shop, badge, shipTag) {
         return '<div class="food-feed__item">' +
             '<div class="food-feed__pic">' +
-                foodImg('assets/food/' + img + '.png', 'food-feed__img') +
+                foodImg('assets/food/' + img + '.jpg', 'food-feed__img') +
 
             '</div>' +
             '<div class="food-feed__body">' +
