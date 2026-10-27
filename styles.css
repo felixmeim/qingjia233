@@ -2114,9 +2114,9 @@ body.is-wxwork .form-topbar__link {
     right: -12px;
     top: -14px;
     bottom: -10px;
-    background: url(assets/food/home-top-bg.png) center top / cover no-repeat;
-    filter: blur(11px) saturate(1.05) brightness(1.04);
-    transform: scale(1.08);
+    background: url(assets/food/home-top-bg-clean.png) center top / cover no-repeat;
+    filter: blur(2px) saturate(1.04) brightness(1.03);
+    transform: scale(1.02);
     z-index: 0;
 }
 .home-hero::after {
