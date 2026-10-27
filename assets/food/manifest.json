@@ -708,5 +708,128 @@
   "w": 37,
   "h": 41,
   "note": "与已有 food/icon-addr.png 不同图（地址图标为「我的地址」版），本图为首页定位针，未复用"
+ },
+ {
+  "file": "food/home-top-bg.png",
+  "label": "首页顶部风景背景条（状态栏+常用地址+搜索条整段）",
+  "source": "f000_0s2.png",
+  "x": 0,
+  "y": 0,
+  "w": 720,
+  "h": 250,
+  "note": "CSS 宽 360 @2x；按需求裁到搜索条下沿+20px，含状态栏/地址/搜索条原生 UI 文字，铺作顶部背景时请用真实组件覆盖"
+ },
+ {
+  "file": "food/home-search-scan.png",
+  "label": "搜索条-扫一扫（扫码框）图标",
+  "source": "f000_0s2.png",
+  "x": 42,
+  "y": 172,
+  "w": 49,
+  "h": 47,
+  "note": "与旧 home-scan.png 同款扫码框，本张裁自录屏帧，白底"
+ },
+ {
+  "file": "food/tab-ico-all.png",
+  "label": "分类tab-全部 碗形图标",
+  "source": "f000_0s2.png",
+  "x": 30,
+  "y": 732,
+  "w": 37,
+  "h": 38,
+  "note": "选中态，图标带浅橙 pill 底色"
+ },
+ {
+  "file": "food/tab-ico-campus.png",
+  "label": "分类tab-校园食堂 蓝色建筑图标",
+  "source": "f000_0s2.png",
+  "x": 162,
+  "y": 734,
+  "w": 33,
+  "h": 32
+ },
+ {
+  "file": "food/tab-ico-single.png",
+  "label": "分类tab-一人食 橙色餐盒图标",
+  "source": "f000_0s2.png",
+  "x": 342,
+  "y": 734,
+  "w": 35,
+  "h": 33
+ },
+ {
+  "file": "food/tab-ico-market.png",
+  "label": "分类tab-超市便利 橙色购物袋图标",
+  "source": "f000_0s2.png",
+  "x": 499,
+  "y": 733,
+  "w": 34,
+  "h": 34
+ },
+ {
+  "file": "food/filter-ico-gift.png",
+  "label": "筛选行-满20减20 红色礼物盒",
+  "source": "f000_0s2.png",
+  "x": 41,
+  "y": 806,
+  "w": 25,
+  "h": 27
+ },
+ {
+  "file": "food/filter-ico-shop.png",
+  "label": "筛选行-堂食店 绿色小碗",
+  "source": "f000_0s2.png",
+  "x": 210,
+  "y": 805,
+  "w": 29,
+  "h": 29
+ },
+ {
+  "file": "food/filter-ico-time.png",
+  "label": "筛选行-15分钟 绿色闪电",
+  "source": "f000_0s2.png",
+  "x": 351,
+  "y": 805,
+  "w": 25,
+  "h": 30
+ },
+ {
+  "file": "food/ad-20redpacket.png",
+  "label": "广告位-好味好价·天天必得20元红包 整条横幅",
+  "source": "f000_0s2.png",
+  "x": 14,
+  "y": 1088,
+  "w": 693,
+  "h": 104,
+  "note": "含立即抢按钮，上下无相邻内容"
+ },
+ {
+  "file": "food/ad-alt.png",
+  "label": "广告位-天猫超市 叠红包更优惠（轮播第二张）",
+  "source": "f000_0s2.png",
+  "x": 368,
+  "y": 524,
+  "w": 336,
+  "h": 178,
+  "note": "录屏 46 帧完全相同（MD5 一致），全片仅一条橙色横幅，故第二张取同帧天猫超市促销卡"
+ },
+ {
+  "file": "food/item-kaoya.png",
+  "label": "商品图-手撕烤鸭+时蔬+榨菜+米饭",
+  "source": "f000_0s2.png",
+  "x": 32,
+  "y": 601,
+  "w": 116,
+  "h": 95,
+  "note": "已裁掉顶部「免配送费」红字角标（角标覆盖到 y=599）"
+ },
+ {
+  "file": "food/item-mango.png",
+  "label": "商品图-良品铺子芒果干",
+  "source": "f000_0s2.png",
+  "x": 390,
+  "y": 580,
+  "w": 108,
+  "h": 109
  }
 ]
