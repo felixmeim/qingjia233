@@ -1006,6 +1006,16 @@
             /* 与原 App 一致：无操作 */
         });
 
+        // 点「个人信息」改名字（按访问者记忆）
+        var nameLink = document.querySelector('#screen-campus .campus-user__link');
+        if (nameLink) {
+            nameLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                showNameEditor();
+            });
+        }
+
         // 工作台顶部轮播卡：双击（掌上校园图标等可点区域以外）切页
         var bannerAlt = false;
         var lastSlideAt = 0;
@@ -1093,6 +1103,7 @@
                 return;
             }
             var done = false;
+            var fsTimer = null;
             function isFormTarget(t) {
                 if (!t || !t.tagName) {
                     return false;
