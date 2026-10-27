@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 请假管理系统 —— 五屏结构
  *
  *   工作台(#/workbench) → 掌上校园(#/campus) → 申请记录(#/records)
@@ -20,12 +20,13 @@
     var MAX_RECORDS = 100;
     var STATUS_TEXT = '审核通过';               // 所有生成记录一律审核通过
 
-    var PAGES = ['workbench', 'campus', 'records', 'form', 'shot', 'food', 'food-orders', 'food-order-detail', 'food-messages', 'food-chat', 'food-ai'];
+    var PAGES = ['workbench', 'campus', 'records', 'form', 'shot', 'food-home', 'food', 'food-orders', 'food-order-detail', 'food-messages', 'food-chat', 'food-ai', 'food-address'];
     var DEPTH = { workbench: 0, campus: 1, records: 2, form: 3, shot: 3,
-        food: 1, 'food-orders': 2, 'food-order-detail': 3, 'food-messages': 2, 'food-chat': 3, 'food-ai': 1 };
+        'food-home': 1, food: 1, 'food-orders': 2, 'food-order-detail': 3, 'food-messages': 2, 'food-chat': 3, 'food-ai': 1, 'food-address': 2 };
     var FALLBACK = { campus: 'workbench', records: 'campus', form: 'records', shot: 'records', workbench: null,
         food: 'workbench', 'food-orders': 'food', 'food-order-detail': 'food-orders',
-        'food-messages': 'food', 'food-chat': 'food-messages', 'food-ai': 'food' };
+        'food-messages': 'food-home', 'food-chat': 'food-messages', 'food-ai': 'food-home',
+        'food-home': null, 'food-address': 'food-home' };
 
     /* ============ 记录存储（localStorage，失败时内存兜底） ============ */
     var store = {
@@ -91,9 +92,42 @@
      *   返回：当前屏从 0 滑到右侧 100%，露出下面那张（已在 0 位置）的上一屏
      * 这样屏幕上永远只有「完整的一屏 + 一张正在滑动的屏」，不会露出第三层或页面底色。
      */
+    function isFoodScreen(p) {
+        return !!p && p.indexOf('food') === 0;
+    }
+
+    // 外卖内部跳转：直接硬切，不要过渡动画
+    function showFoodScreenInstant(page) {
+        var next = screens[page];
+        if (!next) {
+            return;
+        }
+        PAGES.forEach(function (p) {
+            var el = screens[p];
+            if (!el || el === next) {
+                return;
+            }
+            el.style.transition = 'none';
+            el.style.display = 'none';
+            el.style.transform = 'translateX(0)';
+            el.style.zIndex = '1';
+            el.style.pointerEvents = 'none';
+        });
+        next.style.transition = 'none';
+        next.style.display = 'flex';
+        next.style.transform = 'translateX(0)';
+        next.style.zIndex = '1';
+        next.style.pointerEvents = 'auto';
+        currentPage = page;
+    }
+
     function showScreen(page, dir) {
         var next = screens[page];
         var prev = screens[currentPage];
+        if (isFoodScreen(page) && isFoodScreen(currentPage) && next && prev && next !== prev) {
+            showFoodScreenInstant(page);
+            return;
+        }
         if (!next) {
             return;
         }
@@ -217,6 +251,12 @@
         if (page === 'form') {
             return '#/form';
         }
+        if (page === 'food-home') {
+            return '#/food-home';
+        }
+        if (page === 'food-address') {
+            return '#/food/address';
+        }
         if (page === 'food') {
             return '#/food';
         }
@@ -252,8 +292,14 @@
         if (h.indexOf('shot') === 0) {
             return { page: 'shot', id: decodeURIComponent(h.split('/')[1] || '') };
         }
+        if (h === 'food-home' || h === 'food-home/' || h === '') {
+            return { page: 'food-home', id: null };
+        }
         if (h.indexOf('food') === 0) {
             var rest = h.split('/')[1] || '';
+            if (rest === 'address') {
+                return { page: 'food-address', id: null };
+            }
             if (rest === 'orders') {
                 return { page: 'food-orders', id: null };
             }
@@ -271,7 +317,7 @@
             }
             return { page: 'food', id: null };
         }
-        return { page: 'workbench', id: null };
+        return { page: 'food-home', id: null };
     }
 
     function depthOf(state) {
@@ -321,6 +367,10 @@
             renderCampus();
         } else if (page === 'workbench') {
             renderWorkbench();
+        } else if (page === 'food-home') {
+            renderFoodHome();
+        } else if (page === 'food-address') {
+            renderFoodAddress();
         } else if (page === 'food') {
             renderFood();
         } else if (page === 'food-orders') {
@@ -925,6 +975,35 @@
      * 复刻自 6 张参考图，数据全部本地生成，不请求网络
      * ============================================================ */
     var FOOD_KEY_ETA = 'qj.food.eta';
+    var FOOD_KEY_ADDR = 'qj.food.addr';
+    var FOOD_ADDR_DEFAULT = {
+        name: '晴',
+        phone: '11451419191',
+        addr: '广东警官学院嘉禾校区后门'
+    };
+    var foodAddr = {
+        name: FOOD_ADDR_DEFAULT.name,
+        phone: FOOD_ADDR_DEFAULT.phone,
+        addr: FOOD_ADDR_DEFAULT.addr
+    };
+
+    function loadFoodAddr() {
+        try {
+            var raw = localStorage.getItem(FOOD_KEY_ADDR);
+            var o = raw ? JSON.parse(raw) : null;
+            if (o && typeof o === 'object') {
+                foodAddr.name = String(o.name || FOOD_ADDR_DEFAULT.name);
+                foodAddr.phone = String(o.phone || FOOD_ADDR_DEFAULT.phone);
+                foodAddr.addr = String(o.addr || FOOD_ADDR_DEFAULT.addr);
+            }
+        } catch (e) { /* ignore */ }
+    }
+
+    function saveFoodAddr() {
+        try {
+            localStorage.setItem(FOOD_KEY_ADDR, JSON.stringify(foodAddr));
+        } catch (e) { /* ignore */ }
+    }
     var FOOD_KEY_TAB = 'qj.food.tab';
 
     var foodState = {
@@ -1017,7 +1096,7 @@
 
     function foodTabbar(active) {
         var tabs = [
-            { key: 'home', label: '推荐', icon: 'assets/food/tab-home.png' },
+            { key: 'home', label: '推荐', icon: 'assets/food/tab-home.png', action: 'food-home' },
             { key: 'msg', label: '消息', icon: 'assets/food/tab-msg.png', action: 'food-messages' },
             { key: 'ai', label: 'AI点餐', icon: 'assets/food/tab-ai.png', action: 'food-ai', ai: true },
             { key: 'cart', label: '购物车', icon: 'assets/food/tab-cart.png' },
@@ -1063,7 +1142,7 @@
             { num: '15', unit: '元', label: '最高支付权益' }
         ];
         var more = [
-            { icon: 'assets/food/icon-addr.png', label: '我的地址' },
+            { icon: 'assets/food/icon-addr.png', label: '我的地址', act: 'food-address' },
             { icon: 'assets/food/icon-service.png', label: '我的客服' },
             { icon: 'assets/food/icon-invoice.png', label: '开发票' },
             { icon: 'assets/food/icon-rebate.png', label: '下单返' }
@@ -1138,7 +1217,8 @@
                 '<div class="food-card food-more">' +
                     '<div class="food-card__hd"><h3 class="food-card__title">更多功能</h3></div>' +
                     '<div class="food-more__row">' + more.map(function (m) {
-                        return '<div class="food-more__item">' + foodImg(m.icon, 'food-more__icon') +
+                        return '<div class="food-more__item"' + (m.act ? ' data-food-go="' + m.act + '"' : '') + '>' +
+                            foodImg(m.icon, 'food-more__icon') +
                             '<span class="food-more__label">' + m.label + '</span></div>';
                     }).join('') + '</div>' +
                     '<div class="food-wallet__dots"><i class="on"></i><i></i><i></i><i></i><i></i></div>' +
@@ -1178,6 +1258,7 @@
                         '</div>' +
                     '</div>' +
                 '</div>' +
+                '<div class="food-me-backtip" data-food-go="workbench">企业微信工作台<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#9AA1AE" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>' +
                 '<div class="food-me-tail"></div>' +
             '</div>' +
             foodTabbar('me');
@@ -1252,13 +1333,13 @@
                     '<span class="food-detail-nav__right">' + foodImg('assets/food/icon-cs.png', 'food-detail-nav__cs') + '<span>客服</span></span>' +
                 '</header>' +
                 '<div class="food-detail-status">' +
-                    '<h2 class="food-detail-status__title">订单已送达<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#1A1E24" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></h2>' +
-                    '<p class="food-detail-status__sub">已送至指定暂存点，请及时取货</p>' +
+                    '<h2 class="food-detail-status__title">预计' + etaLabel() + '送达<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></h2>' +
+                    '<p class="food-detail-status__sub">骑手正在为你配送，请保持电话畅通</p>' +
                 '</div>' +
                 '<div class="food-detail-addr">' +
                     '<div class="food-detail-addr__row"><span class="food-detail-addr__k">送至</span>' +
-                        '<span class="food-detail-addr__v">新城桥街道南通三德濠河风景区美居酒店外卖放大堂即可，1312房</span></div>' +
-                    '<div class="food-detail-addr__row"><span class="food-detail-addr__k"></span><span class="food-detail-addr__v">轩 18319241412</span></div>' +
+                        '<span class="food-detail-addr__v">' + escapeHtml(foodAddr.addr) + '</span></div>' +
+                    '<div class="food-detail-addr__row"><span class="food-detail-addr__k"></span><span class="food-detail-addr__v">' + escapeHtml(foodAddr.name) + ' ' + escapeHtml(foodAddr.phone) + '</span></div>' +
                 '</div>' +
                 '<div class="food-detail-acts">' +
                     '<button type="button" class="food-detail-act"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="#F1782B" stroke-width="1.9" stroke-linecap="round"><rect x="4" y="3.5" width="12" height="17" rx="2"/><path d="M8 8h4M8 12h4M17 15h5M19.5 12.5v5"/></svg><span>再买一单</span></button>' +
@@ -1420,6 +1501,216 @@
         el.style.background = '#F5F6F7';
     }
 
+
+    /* ---------- 0) 外卖「推荐」首页 ---------- */
+    function renderFoodHome() {
+        var el = $('screen-food-home');
+        var cats = [
+            { icon: 'assets/food/cat-food.png', label: '美食外卖' },
+            { icon: 'assets/food/cat-market.png', label: '超市便利' },
+            { icon: 'assets/food/cat-drug.png', label: '看病买药' },
+            { icon: 'assets/food/cat-fruit.png', label: '水果买菜' },
+            { icon: 'assets/food/cat-flower.png', label: '鲜花礼品' }
+        ];
+        var tags = [
+            { icon: 'assets/food/tag-hot.png', label: '爆火好店' },
+            { icon: 'assets/food/tag-student.png', label: '学生福利' },
+            { icon: 'assets/food/tag-dessert.png', label: '甜品饮品' },
+            { icon: 'assets/food/tag-redpacket.png', label: '天天红包' },
+            { icon: 'assets/food/tag-bean.png', label: '赚吃货豆' }
+        ];
+        var groups = [
+            { img: 'assets/food/group-mushroom.png', name: '菌菇米线', note: '本月点过2次', price: '12.46' },
+            { img: 'assets/food/group-chicken.png', name: '黄金鸡排堡+牛肉...', note: '热门榜店铺', price: '10.43' },
+            { img: 'assets/food/group-bowl.png', name: '农家一碗香木桶饭...', note: '点过该店', price: '11.5' }
+        ];
+        var shops = [
+            {
+                img: 'assets/food/shop-mocksun.png', badge: '附近上新',
+                name: 'MOCKSUN生日蛋糕·动物奶油·冰淇淋',
+                meta: '月售32 无堂食 明厨亮灶',
+                ship: '起送 ¥0 免配送费',
+                eta: '41分钟 5.6km',
+                rate: '4.9分', rateTxt: '蛋糕松软，甜蜜每一刻',
+                chips: ['爆 18元', '2元店铺红包'], chipRed: true
+            },
+            {
+                img: 'assets/food/shop-shusanshi.png', badge: '校园送',
+                name: '蔬三时·轻食·健康餐(嘉禾望岗店)',
+                meta: '月售3000+ 无明厨亮灶',
+                ship: '起送 ¥40 配送 约¥3.8',
+                eta: '35分钟 6.4km',
+                rate: '4.7分', rateTxt: '望岗健康餐热销榜·第3名',
+                chips: ['爆 29元', '1元店铺红包'], chipRed: true
+            },
+            {
+                img: 'assets/food/shop-xianmiao.png', badge: '校园送',
+                name: '仙庙烧鸡',
+                meta: '月售800+ 明厨亮灶',
+                ship: '起送 ¥15 满39配送 约¥1.2',
+                eta: '35分钟 6.2km',
+                rate: '4.6分', rateTxt: '接受预订 16:30开始配送',
+                chips: ['爆 27元', '食无忧', '线上开票', '慢必赔'], chipRed: false
+            },
+            {
+                img: 'assets/food/shop-brothers.png', badge: '校园送',
+                name: '兄弟湛江鸭仔饭',
+                meta: '月售9999+ 明厨亮灶',
+                ship: '起送 ¥15 满39配送 约¥0.5',
+                eta: '31分钟 4.4km',
+                rate: '4.5分', rateTxt: '249人尝过都说好，价格实惠，料足！',
+                chips: ['爆 23元', '2元店铺红包', '食无忧'], chipRed: true
+            },
+            {
+                img: 'assets/food/shop-zhanyu.png', badge: '校园送',
+                name: '绽语·S-Kitchen·四季轻食(设计之...',
+                meta: '月售4000+ 明厨亮灶',
+                ship: '起送 ¥15 配送 约¥0.5',
+                eta: '33分钟 5.9km',
+                rate: '4.8分', rateTxt: '千人回购 21人觉得吃得很满足',
+                chips: ['爆 25元', '优评领1元店铺券', '安心吃'], chipRed: true
+            },
+            {
+                img: 'assets/food/shop-binjolin.png', badge: '校园送',
+                name: 'BinjoLin槟知蕉林轻食(设计之都店)',
+                meta: '月售800+ 明厨亮灶',
+                ship: '起送 ¥60 配送 约¥5.8',
+                eta: '34分钟 6.2km',
+                rate: '4.9分', rateTxt: '65人觉得好吃 近期130人好评',
+                chips: ['爆 21元', '首次光顾减2'], chipRed: true
+            }
+        ];
+
+        el.innerHTML =
+            '<div class="food-scroll food-scroll--home">' +
+                '<div class="home-head">' +
+                    '<div class="home-loc" data-food-go="food-address">' +
+                        '<span class="home-loc__tag">常用</span>' +
+                        '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="#111" stroke-width="2" stroke-linecap="round"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>' +
+                        '<span class="home-loc__addr">' + escapeHtml(foodAddr.addr) + '</span>' +
+                        '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#111" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>' +
+                    '</div>' +
+                    '<div class="home-search">' +
+                        foodImg('assets/food/home-scan.png', 'home-search__scan') +
+                        '<div class="home-search__box"><span>奶茶</span></div>' +
+                        '<button type="button" class="home-search__btn">搜索</button>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="home-cats">' + cats.map(function (c) {
+                    return '<div class="home-cat">' + foodImg(c.icon, 'home-cat__icon') +
+                        '<span class="home-cat__label">' + c.label + '</span></div>';
+                }).join('') + '</div>' +
+                '<div class="home-cats home-cats--tags">' + tags.map(function (c) {
+                    return '<div class="home-cat home-cat--tag">' + foodImg(c.icon, 'home-cat__icon home-cat__icon--tag') +
+                        '<span class="home-cat__label">' + c.label + '</span></div>';
+                }).join('') + '</div>' +
+                '<div class="home-duo">' +
+                    '<div class="home-duo__card">' +
+                        '<div class="home-duo__hd"><b>爆品团</b>' +
+                            '<span class="home-duo__badge home-duo__badge--r">免凑单</span>' +
+                            '<span class="home-duo__badge home-duo__badge--r">免运费</span>' +
+                            '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#999" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>' +
+                        '<div class="home-duo__body">' + foodImg('assets/food/card-hotshop.png', 'home-duo__img') +
+                            '<div class="home-duo__txt"><span class="home-duo__name">特色干溜杂酱面+煎蛋+热狗</span>' +
+                            '<span class="home-duo__price">¥<b>10.6</b><i>到手价</i></span></div></div>' +
+                    '</div>' +
+                    '<div class="home-duo__card">' +
+                        '<div class="home-duo__hd"><b>天猫超市</b>' +
+                            '<span class="home-duo__badge home-duo__badge--r">领红包更优惠</span>' +
+                            '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="#999" stroke-width="2.2" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></div>' +
+                        '<div class="home-duo__body">' + foodImg('assets/food/card-tmall.png', 'home-duo__img') +
+                            '<div class="home-duo__txt"><span class="home-duo__name">FAWN MUM/小鹿妈妈超细牙...</span>' +
+                            '<span class="home-duo__price">¥<b>8.8</b><i>到手价</i></span></div></div>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="home-tabs">' +
+                    '<span class="home-tabs__item home-tabs__item--on">全部</span>' +
+                    '<span class="home-tabs__item">校园食堂</span>' +
+                    '<span class="home-tabs__item">一人食</span>' +
+                    '<span class="home-tabs__item">超市便利</span>' +
+                    foodImg('assets/food/icon-grid.png', 'home-tabs__grid') +
+                '</div>' +
+                '<div class="home-filters">' +
+                    '<span class="home-filter">满20减20</span>' +
+                    '<span class="home-filter">堂食店</span>' +
+                    '<span class="home-filter">15分钟</span>' +
+                    '<span class="home-filter">免配送费</span>' +
+                    '<span class="home-filter home-filter--last">筛选</span>' +
+                '</div>' +
+                '<div class="home-shops">' +
+                shops.slice(0, 1).map(function (sp) {
+                    return '<div class="home-shop">' +
+                        '<div class="home-shop__pic">' + foodImg(sp.img, 'home-shop__img') +
+                            (sp.badge ? '<span class="home-shop__badge">' + sp.badge + '</span>' : '') + '</div>' +
+                        '<div class="home-shop__body">' +
+                            '<div class="home-shop__name">' + sp.name + '</div>' +
+                            '<div class="home-shop__meta">' + sp.meta + '</div>' +
+                            '<div class="home-shop__ship">' + sp.ship + '<span class="home-shop__eta">' + sp.eta + '</span></div>' +
+                            '<div class="home-shop__rate"><b>' + sp.rate + '</b><span>' + sp.rateTxt + '</span></div>' +
+                            '<div class="home-shop__chips">' + sp.chips.map(function (c) {
+                                return '<span class="home-chip' + (sp.chipRed && c.indexOf('爆') === 0 ? ' home-chip--red' : '') + '">' + c + '</span>';
+                            }).join('') + '</div>' +
+                        '</div></div>';
+                }).join('') +
+                '</div>' +
+                '<div class="home-banner">' + foodImg('assets/food/banner-18.png', 'home-banner__img') + '</div>' +
+                '<div class="home-group">' +
+                    '<div class="home-group__hd"><b>爆品团</b><span>免凑单免运费，到手价吃到饱！</span>' +
+                        '<span class="home-group__more">更多<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#999" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg></span></div>' +
+                    '<div class="home-group__row">' + groups.map(function (g) {
+                        return '<div class="home-group__item">' +
+                            foodImg(g.img, 'home-group__img') +
+                            '<span class="home-group__note">' + g.note + '</span>' +
+                            '<span class="home-group__name">' + g.name + '</span>' +
+                            '<span class="home-group__price">¥<b>' + g.price + '</b><i>一口价</i></span>' +
+                            '</div>';
+                    }).join('') + '</div>' +
+                '</div>' +
+                '<div class="home-shops">' +
+                shops.slice(1).map(function (sp) {
+                    return '<div class="home-shop">' +
+                        '<div class="home-shop__pic">' + foodImg(sp.img, 'home-shop__img') +
+                            (sp.badge ? '<span class="home-shop__badge">' + sp.badge + '</span>' : '') + '</div>' +
+                        '<div class="home-shop__body">' +
+                            '<div class="home-shop__name">' + sp.name + '</div>' +
+                            '<div class="home-shop__meta">' + sp.meta + '</div>' +
+                            '<div class="home-shop__ship">' + sp.ship + '<span class="home-shop__eta">' + sp.eta + '</span></div>' +
+                            '<div class="home-shop__rate"><b>' + sp.rate + '</b><span>' + sp.rateTxt + '</span></div>' +
+                            '<div class="home-shop__chips">' + sp.chips.map(function (c) {
+                                return '<span class="home-chip' + (sp.chipRed && c.indexOf('爆') === 0 ? ' home-chip--red' : '') + '">' + c + '</span>';
+                            }).join('') + '</div>' +
+                        '</div></div>';
+                }).join('') +
+                '</div>' +
+
+            '</div>' + foodTabbar('home');
+        el.style.background = '#F5F6F7';
+    }
+
+    /* ---------- 0b) 收货地址 / 电话 自定义 ---------- */
+    function renderFoodAddress() {
+        var el = $('screen-food-address');
+        el.innerHTML =
+            foodNav('收货地址', 'data-food-go="food-home"') +
+            '<div class="food-scroll food-scroll--addr">' +
+                '<div class="food-card food-addr-card">' +
+                    '<label class="food-addr-row"><span>收货人</span>' +
+                        '<input type="text" id="food-addr-name" value="' + escapeHtml(foodAddr.name) + '" placeholder="晴"></label>' +
+                    '<label class="food-addr-row"><span>联系电话</span>' +
+                        '<input type="tel" id="food-addr-phone" value="' + escapeHtml(foodAddr.phone) + '" placeholder="11451419191"></label>' +
+                    '<label class="food-addr-row"><span>收货地址</span>' +
+                        '<input type="text" id="food-addr-text" value="' + escapeHtml(foodAddr.addr) + '" placeholder="广东警官学院嘉禾校区后门"></label>' +
+                    '<p class="food-addr-tip">该地址会同步到「推荐」首页顶部与订单详情页的「送至」。</p>' +
+                    '<div class="food-addr-acts">' +
+                        '<button type="button" class="food-btn food-btn--ghost2" id="food-addr-reset">恢复默认</button>' +
+                        '<button type="button" class="food-btn food-btn--primary" id="food-addr-save">保存</button>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="food-addr-tail"></div>' +
+            '</div>';
+        el.style.background = '#F2F6F9';
+    }
+
     /* ---------- 外卖模块：事件 ---------- */
     function foodGo(page, id) {
         go(page, id);
@@ -1447,6 +1738,25 @@
                 foodState.eta = fmtClock(t);
                 saveFoodEta(foodState.eta);
                 renderFoodAi();
+                return;
+            }
+            if (e.target.closest('#food-addr-save')) {
+                var nEl = $('food-addr-name');
+                var pEl = $('food-addr-phone');
+                var aEl = $('food-addr-text');
+                foodAddr.name = (nEl && nEl.value.trim()) || FOOD_ADDR_DEFAULT.name;
+                foodAddr.phone = (pEl && pEl.value.trim()) || FOOD_ADDR_DEFAULT.phone;
+                foodAddr.addr = (aEl && aEl.value.trim()) || FOOD_ADDR_DEFAULT.addr;
+                saveFoodAddr();
+                go('food-home', null);
+                return;
+            }
+            if (e.target.closest('#food-addr-reset')) {
+                foodAddr.name = FOOD_ADDR_DEFAULT.name;
+                foodAddr.phone = FOOD_ADDR_DEFAULT.phone;
+                foodAddr.addr = FOOD_ADDR_DEFAULT.addr;
+                saveFoodAddr();
+                renderFoodAddress();
                 return;
             }
             if (e.target.closest('#food-ai-auto')) {
@@ -1502,6 +1812,7 @@
 
         store.load();
         foodState.eta = loadFoodEta();
+        loadFoodAddr();
         loadSavedData();
         bindEvents();
         bindFoodEvents();
