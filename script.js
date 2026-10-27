@@ -1773,7 +1773,7 @@
                 '<div class="home-ads">' +
                     '<div class="home-ad__track" id="home-ad-track">' +
                         foodImg('assets/food/ad-20redpacket.png', 'home-ad__img') +
-                        foodImg('assets/food/ad-alt.png', 'home-ad__img') +
+                        foodImg('assets/food/ad-alt2.png', 'home-ad__img') +
                     '</div>' +
                     '<div class="home-ad__dots"><i class="home-ad__dot home-ad__dot--on"></i><i class="home-ad__dot"></i></div>' +
                 '</div>' +
